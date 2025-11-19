@@ -57,6 +57,8 @@ bool ConfigLoader::loadSimulation(SimulationConfig& simulation) {
     simulation.timeStep = data.value("timeStep", simulation.timeStep);
     simulation.gravityEnabled = data.value("gravityEnabled", simulation.gravityEnabled);
     simulation.defaultPlayerCredits = data.value("defaultPlayerCredits", simulation.defaultPlayerCredits);
+    simulation.defaultShipClassId = data.value("defaultShipClassId", simulation.defaultShipClassId);
+    simulation.defaultSpawnStationId = data.value("defaultSpawnStationId", simulation.defaultSpawnStationId);
     return true;
 }
 

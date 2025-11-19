@@ -174,6 +174,55 @@ int spawnShipForPlayer(orbital::core::World& world, orbital::core::Player& playe
     return ship.id;
 }
 
+int spawnDockedShipForPlayer(orbital::core::World& world, orbital::core::Player& player, const std::string& classId,
+                             int stationId) {
+    auto* shipClass = world.findShipClass(classId);
+    auto* station = world.findStationById(stationId);
+    if (!shipClass || !station) {
+        return -1;
+    }
+    auto* stationBody = world.findBodyById(station->bodyId);
+    if (!stationBody) {
+        return -1;
+    }
+
+    orbital::core::Body body;
+    body.id = world.nextBodyId++;
+    body.type = orbital::core::BodyType::Ship;
+    body.mass = shipClass->baseMass;
+    body.colliderId = 0;
+    body.position = stationBody->position;
+    body.velocity = stationBody->velocity;
+    body.angle = stationBody->angle;
+    body.angularVelocity = 0.0;
+    world.bodies.push_back(body);
+
+    orbital::core::CargoHold hold;
+    hold.id = world.nextCargoHoldId++;
+    hold.capacityMass = shipClass->cargoCapacity;
+    hold.currentMass = 0.0;
+    world.cargoHolds.push_back(hold);
+
+    orbital::core::Ship ship;
+    ship.id = world.nextShipId++;
+    ship.shipClassId = shipClass->id;
+    ship.bodyId = body.id;
+    ship.fuelMass = 200.0;
+    ship.maxFuelMass = 200.0;
+    ship.cargoHoldId = hold.id;
+    ship.ownerPlayerId = player.id;
+    ship.docked = true;
+    ship.dockedStationId = station->id;
+    world.ships.push_back(ship);
+
+    player.ownedShipIds.push_back(ship.id);
+    if (player.activeShipId == -1) {
+        player.activeShipId = ship.id;
+    }
+
+    return ship.id;
+}
+
 void sendError(orbital::net::TcpServer& server, int connectionId, const std::string& message) {
     json response;
     response["type"] = "error";
@@ -238,6 +287,23 @@ int main() {
                 std::string name = data.value("player_name", "Guest");
                 auto* player = sessionSystem.login(world, name, message.connectionId);
                 if (player) {
+                    if (player->ownedShipIds.empty()) {
+                        int spawnedId =
+                            spawnDockedShipForPlayer(world, *player, world.simulation.defaultShipClassId,
+                                                     world.simulation.defaultSpawnStationId);
+                        if (spawnedId >= 0) {
+                            ORBITAL_LOG(orbital::util::Logger::Level::Info, "Spawned default ship ", spawnedId,
+                                        " for player ", player->name);
+                        } else {
+                            ORBITAL_LOG(orbital::util::Logger::Level::Warning,
+                                        "Failed to spawn default ship for player ", player->name);
+                        }
+                    } else {
+                        auto* activeShip = world.findShipById(player->activeShipId);
+                        if (!activeShip && !player->ownedShipIds.empty()) {
+                            player->activeShipId = player->ownedShipIds.front();
+                        }
+                    }
                     tcpServer.sendMessage(message.connectionId, makeWorldSummary(world, *player).dump());
                 }
             } else if (type == "request_world_summary") {

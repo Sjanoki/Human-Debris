@@ -109,6 +109,8 @@ class GuiClient:
         self.world_state: Dict[str, object] = {}
         self.active_ship_id: int = -1
         self.log_lines: List[str] = []
+        self.camera_center = [0.0, 0.0]
+        self.focused_station_id: Optional[int] = None
 
     def log(self, text: str) -> None:
         print(text)
@@ -141,6 +143,8 @@ class GuiClient:
                 self.on_key_change(event.key, True)
             elif event.type == pygame.KEYUP:
                 self.on_key_change(event.key, False)
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                self.handle_mouse_click(event.pos)
 
     def on_key_change(self, key: int, pressed: bool) -> None:
         if key in (pygame.K_ESCAPE,):
@@ -159,6 +163,11 @@ class GuiClient:
             self.handle_dock_toggle()
         elif pressed and key == pygame.K_b:
             self.handle_buy_ship()
+
+    def handle_mouse_click(self, screen_pos) -> None:
+        if self.active_ship_id >= 0:
+            return
+        self.try_focus_station(screen_pos)
 
     def handle_dock_toggle(self) -> None:
         ship_info = self.get_active_ship_info()
@@ -225,6 +234,73 @@ class GuiClient:
         body_map = {body["body_id"]: body for body in self.world_state.get("bodies", [])}
         return body_map.get(ship_info.get("body_id"))
 
+    def _station_position(self, preferred_station_id: Optional[int]) -> Optional[tuple]:
+        stations = self.world_state.get("stations", [])
+        if not stations:
+            return None
+        body_map = {body["body_id"]: body for body in self.world_state.get("bodies", [])}
+        if preferred_station_id is not None:
+            for station in stations:
+                if station.get("station_id") == preferred_station_id:
+                    body = body_map.get(station.get("body_id"))
+                    if body:
+                        return station.get("station_id"), body.get("x", 0.0), body.get("y", 0.0)
+                    break
+        for station in stations:
+            body = body_map.get(station.get("body_id"))
+            if body:
+                return station.get("station_id"), body.get("x", 0.0), body.get("y", 0.0)
+        return None
+
+    def update_camera_focus(self) -> None:
+        if not self.world_state:
+            return
+        if self.active_ship_id >= 0:
+            body = self.get_active_ship_body()
+            if body:
+                self.camera_center[0] = body.get("x", self.camera_center[0])
+                self.camera_center[1] = body.get("y", self.camera_center[1])
+            return
+        station_id = self.focused_station_id
+        ship_info = self.get_active_ship_info()
+        if ship_info and ship_info.get("docked"):
+            station_id = ship_info.get("docked_station_id", station_id)
+        result = self._station_position(station_id)
+        if result:
+            station_id_resolved, x, y = result
+            self.focused_station_id = station_id_resolved
+            self.camera_center[0] = x
+            self.camera_center[1] = y
+
+    def world_to_screen(self, x: float, y: float) -> pygame.math.Vector2:
+        width, height = self.screen.get_size()
+        sx = (x - self.camera_center[0]) * WORLD_SCALE + width / 2
+        sy = (y - self.camera_center[1]) * WORLD_SCALE + height / 2
+        return pygame.math.Vector2(sx, sy)
+
+    def try_focus_station(self, screen_pos) -> None:
+        if not self.world_state:
+            return
+        stations = self.world_state.get("stations", [])
+        if not stations:
+            return
+        body_map = {body["body_id"]: body for body in self.world_state.get("bodies", [])}
+        best_station = None
+        best_distance = float("inf")
+        for station in stations:
+            body = body_map.get(station.get("body_id"))
+            if not body:
+                continue
+            screen_point = self.world_to_screen(body.get("x", 0.0), body.get("y", 0.0))
+            dist = math.hypot(screen_point.x - screen_pos[0], screen_point.y - screen_pos[1])
+            if dist < best_distance and dist <= 40:
+                best_distance = dist
+                best_station = station.get("station_id")
+        if best_station is not None:
+            self.focused_station_id = best_station
+            self.update_camera_focus()
+            self.log(f"Camera focusing station {best_station}.")
+
     def process_messages(self) -> None:
         for message in self.client.get_messages():
             msg_type = message.get("type")
@@ -243,6 +319,7 @@ class GuiClient:
                 if new_ship != self.active_ship_id:
                     self.active_ship_id = new_ship
                     self.send_control_state()
+                self.update_camera_focus()
             elif msg_type == "action_result":
                 self.log(f"Action: {message.get('message')}")
             elif msg_type == "error":
@@ -259,23 +336,17 @@ class GuiClient:
             text = self.font.render("Waiting for world state...", True, (255, 255, 255))
             self.screen.blit(text, (20, 20))
             return
-        body_map = {body["body_id"]: body for body in self.world_state.get("bodies", [])}
-        center_body = self.get_active_ship_body()
-        if center_body is None:
-            center_body = {"x": 0.0, "y": 0.0}
-        cx, cy = center_body["x"], center_body["y"]
-        width, height = self.screen.get_size()
+        self.update_camera_focus()
 
         def project(x: float, y: float) -> pygame.math.Vector2:
-            sx = (x - cx) * WORLD_SCALE + width / 2
-            sy = (y - cy) * WORLD_SCALE + height / 2
-            return pygame.math.Vector2(sx, sy)
+            return self.world_to_screen(x, y)
 
         # Planet
         planet = self.world_state.get("planet", {})
         pr = planet.get("radius", 0.0) * WORLD_SCALE
         pr = max(10, min(pr, 400))
-        pygame.draw.circle(self.screen, (30, 90, 150), (width // 2, height // 2), int(pr), width=0)
+        planet_pos = project(0.0, 0.0)
+        pygame.draw.circle(self.screen, (30, 90, 150), (int(planet_pos.x), int(planet_pos.y)), int(pr), width=0)
 
         # Bodies
         for body in self.world_state.get("bodies", []):
@@ -306,7 +377,11 @@ class GuiClient:
         if self.player_info:
             info_lines.append(f"Pilot: {self.player_info.get('name', 'Unknown')}")
             info_lines.append(f"Credits: {self.player_info.get('credits', 0):.0f}")
-            info_lines.append(f"Active Ship: {self.active_ship_id}")
+            if self.active_ship_id >= 0:
+                info_lines.append(f"Active Ship: {self.active_ship_id}")
+            else:
+                focus_label = self.focused_station_id if self.focused_station_id is not None else "N/A"
+                info_lines.append(f"Active Ship: None (focusing station {focus_label})")
         ship_info = self.get_active_ship_info()
         if ship_info:
             info_lines.append(f"Fuel: {ship_info.get('fuel_mass', 0):.1f}")
@@ -315,6 +390,8 @@ class GuiClient:
                 info_lines.append(f"Docked at Station {ship_info.get('docked_station_id')}")
         info_lines.append("Controls: W/Up=Thrust, A/Left=Turn Left, D/Right=Turn Right")
         info_lines.append("Space=Mine, E=Dock/Undock, B=Buy SCOUT")
+        if self.active_ship_id < 0:
+            info_lines.append("Click a station to move the camera focus.")
 
         y = 10
         for line in info_lines:

@@ -148,6 +148,8 @@ struct SimulationConfig {
     double timeStep{0.1};
     bool gravityEnabled{true};
     double defaultPlayerCredits{1000.0};
+    std::string defaultShipClassId{"SCOUT"};
+    int defaultSpawnStationId{1};
 };
 
 struct ThrustCommand {
