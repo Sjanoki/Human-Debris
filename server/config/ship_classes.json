@@ -1,0 +1,28 @@
+[
+  {
+    "id": "SCOUT",
+    "baseMass": 1000.0,
+    "cargoCapacity": 200.0,
+    "radarRange": 2000.0,
+    "maxRotationRate": 0.5,
+    "colliderShapeId": "ship_triangle",
+    "engine": {
+      "name": "IonJet",
+      "maxThrust": 15000.0,
+      "fuelUsePerSecondAtFullThrust": 2.0
+    }
+  },
+  {
+    "id": "MINER",
+    "baseMass": 1800.0,
+    "cargoCapacity": 800.0,
+    "radarRange": 1500.0,
+    "maxRotationRate": 0.3,
+    "colliderShapeId": "ship_triangle",
+    "engine": {
+      "name": "Hauler",
+      "maxThrust": 22000.0,
+      "fuelUsePerSecondAtFullThrust": 3.5
+    }
+  }
+]
