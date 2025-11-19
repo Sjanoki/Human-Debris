@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "initialPosition": [7000000.0, 0.0],
+    "initialVelocity": [0.0, 7500.0],
+    "colliderShapeId": "station_circle",
+    "dockingPorts": [
+      {
+        "localPosition": [0.0, 40.0],
+        "localForward": [0.0, 1.0],
+        "radius": 30.0,
+        "maxApproachSpeed": 2.0,
+        "maxAngleDiff": 0.5
+      },
+      {
+        "localPosition": [0.0, -40.0],
+        "localForward": [0.0, -1.0],
+        "radius": 30.0,
+        "maxApproachSpeed": 2.0,
+        "maxAngleDiff": 0.5
+      }
+    ],
+    "market": {
+      "basePricePerKg": 15.0,
+      "purityMultiplier": 25.0,
+      "shipOffers": [
+        { "shipClassId": "SCOUT", "price": 10000.0 },
+        { "shipClassId": "MINER", "price": 25000.0 }
+      ]
+    }
+  }
+]
