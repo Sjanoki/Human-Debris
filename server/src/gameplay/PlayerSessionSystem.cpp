@@ -13,6 +13,7 @@ Player* PlayerSessionSystem::login(World& world, const std::string& name, int co
         if (player.name == name) {
             player.online = true;
             player.connectionId = connectionId;
+            player.worldStateSubscribed = false;
             ORBITAL_LOG(Logger::Level::Info, "Player ", name, " logged in");
             return &player;
         }
@@ -23,6 +24,7 @@ Player* PlayerSessionSystem::login(World& world, const std::string& name, int co
     player.credits = world.simulation.defaultPlayerCredits;
     player.online = true;
     player.connectionId = connectionId;
+    player.worldStateSubscribed = false;
     world.players.push_back(player);
     ORBITAL_LOG(Logger::Level::Info, "Created new player ", name);
     return &world.players.back();
@@ -33,6 +35,7 @@ void PlayerSessionSystem::logout(World& world, int connectionId) {
         if (player.connectionId == connectionId) {
             player.online = false;
             player.connectionId = -1;
+            player.worldStateSubscribed = false;
             ORBITAL_LOG(Logger::Level::Info, "Player ", player.name, " logged out");
             break;
         }

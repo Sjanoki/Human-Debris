@@ -14,6 +14,7 @@ using orbital::core::World;
 using orbital::util::Vec2;
 
 void ThrustSystem::process(World& world) {
+    double dt = world.simulation.timeStep;
     auto commands = world.commandQueues.thrustCommands;
     world.commandQueues.thrustCommands.clear();
 
@@ -47,6 +48,51 @@ void ThrustSystem::process(World& world) {
         Vec2 forward{std::cos(body->angle), std::sin(body->angle)};
         body->velocity += forward * (accel * duration);
         ship->fuelMass -= fuelUse;
+    }
+
+    for (auto& ship : world.ships) {
+        if (ship.docked) {
+            continue;
+        }
+        Body* body = world.findBodyById(ship.bodyId);
+        if (!body || !body->active) {
+            continue;
+        }
+        ShipClass* shipClass = world.findShipClass(ship.shipClassId);
+        if (!shipClass) {
+            continue;
+        }
+        double turnInput = 0.0;
+        if (ship.controlState.turnLeft) {
+            turnInput -= 1.0;
+        }
+        if (ship.controlState.turnRight) {
+            turnInput += 1.0;
+        }
+        if (turnInput != 0.0) {
+            body->angle += shipClass->maxRotationRate * dt * turnInput;
+        }
+
+        if (!ship.controlState.thrust || ship.fuelMass <= 0.0) {
+            continue;
+        }
+        double desiredFuel = shipClass->engine.fuelUsePerSecondAtFullThrust * dt;
+        if (desiredFuel <= 0.0) {
+            continue;
+        }
+        double fuelUsed = std::min(desiredFuel, ship.fuelMass);
+        double effectiveDt = dt;
+        if (fuelUsed < desiredFuel) {
+            effectiveDt *= (fuelUsed / desiredFuel);
+        }
+        if (effectiveDt <= 0.0) {
+            continue;
+        }
+        double force = shipClass->engine.maxThrust;
+        double accel = force / std::max(1.0, body->mass);
+        Vec2 forward{std::cos(body->angle), std::sin(body->angle)};
+        body->velocity += forward * (accel * effectiveDt);
+        ship.fuelMass -= fuelUsed;
     }
 }
 

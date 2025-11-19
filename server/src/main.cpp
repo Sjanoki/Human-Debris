@@ -57,6 +57,83 @@ nlohmann::json makeWorldSummary(orbital::core::World& world, orbital::core::Play
     return summary;
 }
 
+std::string bodyTypeToString(orbital::core::BodyType type) {
+    switch (type) {
+    case orbital::core::BodyType::Ship:
+        return "Ship";
+    case orbital::core::BodyType::Asteroid:
+        return "Asteroid";
+    case orbital::core::BodyType::Station:
+        return "Station";
+    }
+    return "Unknown";
+}
+
+json makeWorldState(orbital::core::World& world, orbital::core::Player& player) {
+    json state;
+    state["type"] = "world_state";
+    state["timestamp"] = std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count();
+    json bodies = json::array();
+    for (const auto& body : world.bodies) {
+        if (!body.active) {
+            continue;
+        }
+        json b;
+        b["body_id"] = body.id;
+        b["type"] = bodyTypeToString(body.type);
+        b["x"] = body.position.x;
+        b["y"] = body.position.y;
+        b["angle"] = body.angle;
+        bodies.push_back(b);
+    }
+    state["bodies"] = bodies;
+
+    json ships = json::array();
+    for (const auto& ship : world.ships) {
+        json s;
+        s["ship_id"] = ship.id;
+        s["body_id"] = ship.bodyId;
+        s["owner_player_id"] = ship.ownerPlayerId;
+        s["ship_class_id"] = ship.shipClassId;
+        s["fuel_mass"] = ship.fuelMass;
+        s["docked"] = ship.docked;
+        s["docked_station_id"] = ship.dockedStationId;
+        const auto* hold = world.findCargoHoldById(ship.cargoHoldId);
+        if (hold) {
+            s["cargo_mass"] = hold->currentMass;
+            s["cargo_capacity"] = hold->capacityMass;
+        } else {
+            s["cargo_mass"] = 0.0;
+            s["cargo_capacity"] = 0.0;
+        }
+        ships.push_back(s);
+    }
+    state["ships"] = ships;
+
+    json stations = json::array();
+    for (const auto& station : world.stations) {
+        json s;
+        s["station_id"] = station.id;
+        s["body_id"] = station.bodyId;
+        stations.push_back(s);
+    }
+    state["stations"] = stations;
+
+    json playerJson;
+    playerJson["id"] = player.id;
+    playerJson["name"] = player.name;
+    playerJson["credits"] = player.credits;
+    playerJson["active_ship_id"] = player.activeShipId;
+    playerJson["docked_station_id"] = player.dockedStationId;
+    state["player"] = playerJson;
+
+    json planet;
+    planet["radius"] = world.planet.radius;
+    state["planet"] = planet;
+
+    return state;
+}
+
 int spawnShipForPlayer(orbital::core::World& world, orbital::core::Player& player, const std::string& classId) {
     auto* shipClass = world.findShipClass(classId);
     if (!shipClass) {
@@ -133,12 +210,15 @@ int main() {
     bool running = true;
     auto lastTick = std::chrono::steady_clock::now();
     double accumulator = 0.0;
+    double worldStateAccumulator = 0.0;
+    const double worldStateInterval = 0.25;
 
     while (running) {
         auto now = std::chrono::steady_clock::now();
         double delta = std::chrono::duration<double>(now - lastTick).count();
         lastTick = now;
         accumulator += delta;
+        worldStateAccumulator += delta;
 
         std::vector<orbital::net::NetworkMessage> messages;
         tcpServer.pollMessages(messages);
@@ -254,6 +334,29 @@ int main() {
                     player->activeShipId = shipId;
                     sendActionResult(tcpServer, message.connectionId, "Switched to ship " + std::to_string(shipId));
                 }
+            } else if (type == "control_state") {
+                auto* player = world.findPlayerByConnection(message.connectionId);
+                if (!player) {
+                    continue;
+                }
+                int shipId = data.value("ship_id", -1);
+                auto* ship = world.findShipById(shipId);
+                if (!ship || ship->ownerPlayerId != player->id) {
+                    continue;
+                }
+                ship->controlState.thrust = data.value("thrust", ship->controlState.thrust);
+                ship->controlState.turnLeft = data.value("turn_left", ship->controlState.turnLeft);
+                ship->controlState.turnRight = data.value("turn_right", ship->controlState.turnRight);
+                ship->controlState.mine = data.value("mine", ship->controlState.mine);
+            } else if (type == "subscribe_world_state") {
+                auto* player = world.findPlayerByConnection(message.connectionId);
+                if (!player) {
+                    continue;
+                }
+                bool enabled = data.value("enabled", true);
+                player->worldStateSubscribed = enabled;
+                sendActionResult(tcpServer, message.connectionId,
+                                enabled ? "World state streaming enabled." : "World state streaming disabled.");
             } else if (type == "logout") {
                 sessionSystem.logout(world, message.connectionId);
             }
@@ -269,6 +372,16 @@ int main() {
             economySystem.processSell(world);
             economySystem.processBuy(world);
             accumulator -= dt;
+        }
+
+        if (worldStateAccumulator >= worldStateInterval) {
+            worldStateAccumulator = 0.0;
+            for (auto& player : world.players) {
+                if (!player.online || !player.worldStateSubscribed || player.connectionId < 0) {
+                    continue;
+                }
+                tcpServer.sendMessage(player.connectionId, makeWorldState(world, player).dump());
+            }
         }
 
         std::this_thread::sleep_for(std::chrono::milliseconds(10));

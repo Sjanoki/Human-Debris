@@ -62,6 +62,13 @@ struct ShipClass {
     std::string colliderShapeId;
 };
 
+struct ShipControlState {
+    bool thrust{false};
+    bool turnLeft{false};
+    bool turnRight{false};
+    bool mine{false};
+};
+
 struct Ship {
     int id{-1};
     int bodyId{-1};
@@ -72,6 +79,7 @@ struct Ship {
     int ownerPlayerId{-1};
     bool docked{false};
     int dockedStationId{-1};
+    ShipControlState controlState;
 };
 
 struct Asteroid {
@@ -133,6 +141,7 @@ struct Player {
     bool online{false};
     int dockedStationId{-1};
     int connectionId{-1};
+    bool worldStateSubscribed{false};
 };
 
 struct SimulationConfig {
