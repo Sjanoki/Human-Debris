@@ -84,6 +84,8 @@ json makeWorldState(orbital::core::World& world, orbital::core::Player& player) 
         b["x"] = body.position.x;
         b["y"] = body.position.y;
         b["angle"] = body.angle;
+        b["vx"] = body.velocity.x;
+        b["vy"] = body.velocity.y;
         bodies.push_back(b);
     }
     state["bodies"] = bodies;
@@ -115,6 +117,19 @@ json makeWorldState(orbital::core::World& world, orbital::core::Player& player) 
         json s;
         s["station_id"] = station.id;
         s["body_id"] = station.bodyId;
+        s["name"] = "Station " + std::to_string(station.id);
+        json market;
+        market["basePricePerKg"] = station.market.basePricePerKg;
+        market["purityMultiplier"] = station.market.purityMultiplier;
+        json offers = json::array();
+        for (const auto& offer : station.market.shipOffers) {
+            json o;
+            o["ship_class_id"] = offer.shipClassId;
+            o["price"] = offer.price;
+            offers.push_back(o);
+        }
+        market["ship_offers"] = offers;
+        s["market"] = market;
         stations.push_back(s);
     }
     state["stations"] = stations;
@@ -129,7 +144,23 @@ json makeWorldState(orbital::core::World& world, orbital::core::Player& player) 
 
     json planet;
     planet["radius"] = world.planet.radius;
+    planet["mu"] = world.planet.mu;
     state["planet"] = planet;
+
+    json shipClasses = json::array();
+    for (const auto& shipClass : world.shipClasses) {
+        json sc;
+        sc["ship_class_id"] = shipClass.id;
+        sc["cargo_capacity"] = shipClass.cargoCapacity;
+        sc["max_rotation_rate"] = shipClass.maxRotationRate;
+        json engine;
+        engine["name"] = shipClass.engine.name;
+        engine["max_thrust"] = shipClass.engine.maxThrust;
+        engine["fuel_use_per_second"] = shipClass.engine.fuelUsePerSecondAtFullThrust;
+        sc["engine"] = engine;
+        shipClasses.push_back(sc);
+    }
+    state["ship_classes"] = shipClasses;
 
     return state;
 }
