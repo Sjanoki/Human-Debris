@@ -21,4 +21,10 @@ add_executable(orbital_server ${SERVER_SOURCES})
 
 target_include_directories(orbital_server PRIVATE include)
 
-target_link_libraries(orbital_server PRIVATE pthread)
+find_package(Threads REQUIRED)
+
+target_link_libraries(orbital_server PRIVATE Threads::Threads)
+
+if (WIN32)
+    target_link_libraries(orbital_server PRIVATE Ws2_32)
+endif()
