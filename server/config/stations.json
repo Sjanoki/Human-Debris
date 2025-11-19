@@ -1,8 +1,8 @@
 [
   {
     "id": 1,
-    "initialPosition": [7000000.0, 0.0],
-    "initialVelocity": [0.0, 7500.0],
+    "initialPosition": [10000000.0, 0.0],
+    "initialVelocity": [0.0, 6313.5],
     "colliderShapeId": "station_circle",
     "dockingPorts": [
       {
