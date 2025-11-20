@@ -2,6 +2,7 @@
 
 #include <filesystem>
 
+#include "core/BlueprintLoader.hpp"
 #include "util/Logger.hpp"
 
 namespace orbital::core {
@@ -13,6 +14,9 @@ WorldBuilder::WorldBuilder(std::string configDir) : configDir_(std::move(configD
 World WorldBuilder::build() {
     World world;
     ConfigLoader loader(configDir_);
+    BlueprintLoader blueprintLoader(configDir_ + "/blueprints");
+    blueprintLoader.loadAll(world.blueprints);
+    loader.setBlueprintLibrary(&world.blueprints);
     loader.loadPlanet(world.planet);
     loader.loadSimulation(world.simulation);
     loader.loadShipClasses(world.shipClasses);

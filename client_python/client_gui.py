@@ -21,6 +21,7 @@ ZOOM_MIN = 0.25
 ZOOM_MAX = 240000.0
 TARGET_PICK_RADIUS_PX = 30
 ICON_THRESHOLD_PX = 20
+TILE_DEBUG_THRESHOLD_PX = 8
 SCALE_BAR_PIXELS = 120
 ORBIT_STEPS = 900
 MIN_ORBIT_DURATION = 600.0
@@ -124,6 +125,7 @@ class GuiClient:
         self.ship_classes: Dict[str, Dict[str, object]] = {}
         self.ship_shapes: Dict[str, Dict[str, object]] = {}
         self.station_shapes: Dict[int, Dict[str, object]] = {}
+        self.blueprints: Dict[str, Dict[str, object]] = {}
         self.default_ship_shape = {
             "vertices": [(-1.0, -0.6), (1.0, 0.0), (-1.0, 0.6)],
             "scale_m": 50.0,
@@ -148,8 +150,10 @@ class GuiClient:
         self.ship_by_body_id: Dict[int, Dict[str, object]] = {}
         self.closest_approach_info: Optional[Dict[str, float]] = None
         self.logout_sent = False
+        self.player_ships_at_station: List[Dict[str, object]] = []
 
         self.load_shape_definitions()
+        self.load_blueprints()
 
     def log(self, text: str) -> None:
         print(text)
@@ -204,6 +208,36 @@ class GuiClient:
                         self.ship_shapes[class_id] = {"vertices": vertices, "scale_m": scale_m}
         except (OSError, json.JSONDecodeError):
             pass
+
+    def load_blueprints(self) -> None:
+        bp_dir = Path(__file__).resolve().parent.parent / "server" / "config" / "blueprints"
+        self.blueprints = {}
+        if not bp_dir.exists():
+            return
+        for path in bp_dir.glob("*.json"):
+            try:
+                data = json.loads(path.read_text())
+            except (OSError, json.JSONDecodeError):
+                continue
+            if not isinstance(data, dict):
+                continue
+            bp_id = str(data.get("id") or path.stem).upper()
+            grid = data.get("grid_size", {}) or {}
+            layers = data.get("layers", {}) or {}
+            hit_rows = layers.get("hit", []) or []
+            systems_rows = layers.get("systems", []) or []
+            try:
+                pixel_scale = float(data.get("pixel_scale_m", 1.0))
+            except (TypeError, ValueError):
+                pixel_scale = 1.0
+            self.blueprints[bp_id] = {
+                "id": bp_id,
+                "grid_w": int(grid.get("w", len(hit_rows[0]) if hit_rows else 0)),
+                "grid_h": int(grid.get("h", len(hit_rows))),
+                "pixel_scale_m": pixel_scale,
+                "hit": hit_rows,
+                "systems": systems_rows,
+            }
 
         self.station_shapes = {}
         try:
@@ -303,6 +337,8 @@ class GuiClient:
                     self.send_sell_all(payload["station_id"])
                 elif action == "buy":
                     self.send_buy_ship(payload["station_id"], payload["ship_class_id"])
+                elif action == "switch":
+                    self.client.send({"type": "switch_ship", "new_ship_id": payload.get("ship_id", -1)})
                 return True
         return False
 
@@ -474,6 +510,7 @@ class GuiClient:
             msg_type = message.get("type")
             if msg_type == "world_summary":
                 self.player_info = message.get("player", {})
+                self.player_ships_at_station = message.get("player_ships_at_station", [])
                 new_ship = self.player_info.get("active_ship_id", -1)
                 if new_ship != self.active_ship_id:
                     self.active_ship_id = new_ship
@@ -482,6 +519,7 @@ class GuiClient:
             elif msg_type == "world_state":
                 self.world_state = message
                 self.player_info = message.get("player", {})
+                self.player_ships_at_station = message.get("player_ships_at_station", [])
                 self.body_map = {body["body_id"]: body for body in message.get("bodies", [])}
                 self.station_map = {station["station_id"]: station for station in message.get("stations", [])}
                 self.station_body_lookup = {
@@ -495,6 +533,16 @@ class GuiClient:
                 self.ship_classes = {
                     sc.get("ship_class_id"): sc for sc in message.get("ship_classes", [])
                 }
+                for station in message.get("stations", []):
+                    station_id = station.get("station_id")
+                    verts = station.get("shape_vertices")
+                    if station_id is not None and verts:
+                        try:
+                            parsed = [(float(v[0]), float(v[1])) for v in verts]
+                        except (TypeError, ValueError):
+                            parsed = []
+                        if parsed:
+                            self.station_shapes[int(station_id)] = {"vertices": parsed, "scale_m": 1.0}
                 planet = message.get("planet", {})
                 self.planet_radius = planet.get("radius", self.planet_radius)
                 self.planet_mu = planet.get("mu", self.planet_mu)
@@ -690,6 +738,65 @@ class GuiClient:
             points.append((int(projected.x), int(projected.y)))
         return points
 
+    def draw_blueprint_tiles(
+        self, body: Dict[str, object], blueprint: Dict[str, object], color: Tuple[int, int, int], selected: bool
+    ) -> bool:
+        tile_world = float(blueprint.get("pixel_scale_m", 1.0))
+        tile_px = tile_world * self.base_scale * self.zoom
+        if tile_px < TILE_DEBUG_THRESHOLD_PX:
+            return False
+        grid_w = int(blueprint.get("grid_w", 0))
+        grid_h = int(blueprint.get("grid_h", 0))
+        hit_rows = blueprint.get("hit", []) or []
+        systems_rows = blueprint.get("systems", []) or []
+        angle = body.get("angle", 0.0)
+        cos_a = math.cos(angle)
+        sin_a = math.sin(angle)
+        body_x = body.get("x", 0.0)
+        body_y = body.get("y", 0.0)
+        half = tile_world * 0.5
+
+        def cell_center(ix: int, iy: int) -> Tuple[float, float]:
+            cx = (ix - grid_w / 2 + 0.5) * tile_world
+            cy = (grid_h / 2 - iy - 0.5) * tile_world
+            return cx, cy
+
+        for iy in range(grid_h):
+            system_row = systems_rows[iy] if iy < len(systems_rows) else ""
+            hit_row = hit_rows[iy] if iy < len(hit_rows) else ""
+            for ix in range(grid_w):
+                ch = system_row[ix] if ix < len(system_row) else "."
+                if ch == ".":
+                    ch = hit_row[ix] if ix < len(hit_row) else "."
+                if ch == ".":
+                    continue
+                cx, cy = cell_center(ix, iy)
+                corners_local = [
+                    (cx - half, cy - half),
+                    (cx + half, cy - half),
+                    (cx + half, cy + half),
+                    (cx - half, cy + half),
+                ]
+                screen_points = []
+                for lx, ly in corners_local:
+                    wx = body_x + lx * cos_a - ly * sin_a
+                    wy = body_y + lx * sin_a + ly * cos_a
+                    projected = self.world_to_screen(wx, wy)
+                    screen_points.append((int(projected.x), int(projected.y)))
+                fill = (120, 160, 255) if ch != "X" else (140, 140, 140)
+                pygame.draw.polygon(self.screen, fill, screen_points, width=0)
+                pygame.draw.polygon(self.screen, color, screen_points, width=1)
+                char_surface = self.small_font.render(ch, True, (0, 0, 0))
+                centroid_x = sum(p[0] for p in screen_points) / 4
+                centroid_y = sum(p[1] for p in screen_points) / 4
+                self.screen.blit(char_surface, char_surface.get_rect(center=(centroid_x, centroid_y)))
+        if selected:
+            center = self.world_to_screen(body_x, body_y)
+            pygame.draw.circle(
+                self.screen, (255, 230, 120), (int(center.x), int(center.y)), max(4, int(tile_px)), width=1
+            )
+        return True
+
     def draw_ship_icon(
         self, position: pygame.math.Vector2, angle: float, color: Tuple[int, int, int]
     ) -> None:
@@ -707,12 +814,17 @@ class GuiClient:
         angle = body.get("angle", 0.0)
         ship_info = self.ship_by_body_id.get(body.get("body_id"))
         class_id = ship_info.get("ship_class_id") if ship_info else None
+        blueprint_id = ship_info.get("blueprint_id") if ship_info else None
         shape = self.ship_shapes.get(class_id, self.default_ship_shape)
         color = (255, 120, 120)
         if body.get("body_id") == active_body_id:
             color = (100, 255, 160)
         elif selected:
             color = (255, 230, 80)
+        if blueprint_id:
+            bp = self.blueprints.get(str(blueprint_id).upper())
+            if bp and self.draw_blueprint_tiles(body, bp, color, selected):
+                return
         max_dim_px = self.compute_shape_pixel_size(shape)
         if max_dim_px < ICON_THRESHOLD_PX:
             self.draw_ship_icon(position, angle, color)
@@ -869,6 +981,25 @@ class GuiClient:
             self.screen.blit(text, text_pos)
             self.station_buttons.append(("buy", rect, {"station_id": station_id, "ship_class_id": offer.get("ship_class_id", "SCOUT")}))
             y += 34
+        stored_title = self.small_font.render("Stored ships:", True, (255, 255, 255))
+        self.screen.blit(stored_title, (panel_rect.left + 12, y))
+        y += 22
+        stored_entries = self.player_ships_at_station if self.player_info.get("docked_station_id") == station_id else []
+        if not stored_entries:
+            empty_text = self.small_font.render("None", True, (180, 180, 180))
+            self.screen.blit(empty_text, (panel_rect.left + 12, y))
+            y += 20
+        else:
+            for entry in stored_entries:
+                ship_id = entry.get("id")
+                label = f"#{ship_id} ({entry.get('class_id', 'SHIP')})"
+                rect = pygame.Rect(panel_rect.left + 12, y, panel_rect.width - 24, 26)
+                pygame.draw.rect(self.screen, (90, 170, 140), rect, border_radius=4)
+                text = self.small_font.render(label, True, (0, 0, 0))
+                self.screen.blit(text, text.get_rect(center=rect.center))
+                if ship_id is not None:
+                    self.station_buttons.append(("switch", rect, {"ship_id": ship_id}))
+                y += 30
 
     def draw_hud(self) -> None:
         info_lines = []

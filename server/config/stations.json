@@ -3,6 +3,7 @@
     "id": 1,
     "initialPosition": [10000000.0, 0.0],
     "initialVelocity": [0.0, 6313.5],
+    "blueprint_id": "STATION_ORBITAL",
     "shape_vertices": [
       [-1.0, -1.0],
       [1.0, -1.0],

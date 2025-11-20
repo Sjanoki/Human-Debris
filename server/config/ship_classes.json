@@ -8,6 +8,7 @@
     "maxFuel": 200.0,
     "engineType": "chemical_main",
     "weaponType": "none",
+    "blueprint_id": "SCOUT",
     "colliderShapeId": "ship_triangle",
     "shape_vertices": [
       [-1.0, -0.4],
@@ -30,6 +31,7 @@
     "maxFuel": 350.0,
     "engineType": "chemical_main",
     "weaponType": "mining_laser",
+    "blueprint_id": "MINER",
     "colliderShapeId": "ship_triangle",
     "shape_vertices": [
       [-1.1, -0.5],

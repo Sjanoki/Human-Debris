@@ -12,6 +12,8 @@ class ConfigLoader {
 public:
     explicit ConfigLoader(std::string configDir);
 
+    void setBlueprintLibrary(const BlueprintLibrary* blueprints) { blueprints_ = blueprints; }
+
     bool loadPlanet(Planet& planet);
     bool loadSimulation(SimulationConfig& simulation);
     bool loadShipClasses(std::vector<ShipClass>& shipClasses);
@@ -21,6 +23,7 @@ public:
 
 private:
     std::string configDir_;
+    const BlueprintLibrary* blueprints_{nullptr};
 
     bool loadJsonFile(const std::string& path, nlohmann::json& outJson);
 };

@@ -81,6 +81,7 @@ bool ConfigLoader::loadShipClasses(std::vector<ShipClass>& shipClasses) {
         cls.colliderShapeId = entry.value("colliderShapeId", "ship_triangle");
         cls.engineType = entry.value("engineType", "");
         cls.weaponType = entry.value("weaponType", "none");
+        cls.blueprintId = entry.value("blueprint_id", cls.id);
         auto vertices = entry.value("shape_vertices", json::array());
         if (vertices.is_array()) {
             for (const auto& v : vertices) {
@@ -147,8 +148,29 @@ bool ConfigLoader::loadStations(std::vector<Station>& stations, std::vector<Body
         station.bodyId = body.id;
         body.angle = 0.0;
         body.angularVelocity = 0.0;
-        bodies.push_back(body);
 
+        station.blueprintId = entry.value("blueprint_id", std::string{});
+        if (blueprints_) {
+            if (const auto* bp = blueprints_->getBlueprint(station.blueprintId); bp) {
+                station.dockingPorts.clear();
+                for (const auto& portDesc : bp->docking_ports) {
+                    DockingPort port;
+                    port.localPosition = portDesc.local_pos;
+                    port.localForward = portDesc.local_dir;
+                    port.radius = portDesc.clearance;
+                    station.dockingPorts.push_back(port);
+                }
+                if (!bp->hull_polygon.empty()) {
+                    station.shapeVertices = bp->hull_polygon;
+                    station.shapeScaleMeters = 1.0;
+                }
+                if (bp->mass > 0.0) {
+                    body.mass = bp->mass;
+                    body.inertia = bp->moment_of_inertia;
+                }
+            }
+        }
+        bodies.push_back(body);
         auto ports = entry.value("dockingPorts", json::array());
         for (const auto& portJson : ports) {
             DockingPort port;

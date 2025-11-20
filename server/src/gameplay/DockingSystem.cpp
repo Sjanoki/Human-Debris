@@ -63,6 +63,10 @@ void DockingSystem::process(World& world) {
             shipBody->angularVelocity = 0.0;
             ship->docked = true;
             ship->dockedStationId = station->id;
+            ship->atStationId = station->id;
+            if (auto* player = world.findPlayerById(ship->ownerPlayerId)) {
+                player->dockedStationId = station->id;
+            }
             docked = true;
             break;
         }
@@ -86,6 +90,10 @@ void DockingSystem::processUndock(World& world) {
         }
         ship->docked = false;
         ship->dockedStationId = -1;
+        ship->atStationId = -1;
+        if (auto* player = world.findPlayerById(ship->ownerPlayerId)) {
+            player->dockedStationId = -1;
+        }
         body->velocity += Vec2{0.0, 0.5};
     }
 }

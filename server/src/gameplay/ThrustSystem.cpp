@@ -13,6 +13,14 @@ using orbital::core::ShipClass;
 using orbital::core::World;
 using orbital::util::Vec2;
 
+namespace {
+Vec2 rotateVec(const Vec2& v, double angle) {
+    double c = std::cos(angle);
+    double s = std::sin(angle);
+    return {v.x * c - v.y * s, v.x * s + v.y * c};
+}
+}
+
 void ThrustSystem::process(World& world) {
     double dt = world.simulation.timeStep;
     auto commands = world.commandQueues.thrustCommands;
@@ -45,8 +53,19 @@ void ThrustSystem::process(World& world) {
         }
         double force = throttle * shipClass->engine.maxThrust;
         double accel = force / std::max(1.0, body->mass);
-        Vec2 forward{-std::sin(body->angle), std::cos(body->angle)};
-        body->velocity += forward * (accel * duration);
+        Vec2 totalForce{0.0, 0.0};
+        const auto* bp = world.findBlueprint(ship->blueprintId);
+        if (bp && !bp->engines.empty()) {
+            double perEngineForce = force / static_cast<double>(bp->engines.size());
+            for (const auto& engine : bp->engines) {
+                Vec2 worldDir = rotateVec(engine.local_dir, body->angle);
+                totalForce += worldDir * perEngineForce;
+            }
+        } else {
+            totalForce = Vec2{-std::sin(body->angle), std::cos(body->angle)} * force;
+        }
+        Vec2 accelVec = totalForce / std::max(1.0, body->mass);
+        body->velocity += accelVec * duration;
         ship->fuelMass -= fuelUse;
     }
 
@@ -89,9 +108,19 @@ void ThrustSystem::process(World& world) {
             continue;
         }
         double force = shipClass->engine.maxThrust;
-        double accel = force / std::max(1.0, body->mass);
-        Vec2 forward{-std::sin(body->angle), std::cos(body->angle)};
-        body->velocity += forward * (accel * effectiveDt);
+        Vec2 totalForce{0.0, 0.0};
+        const auto* bp = world.findBlueprint(ship->blueprintId);
+        if (bp && !bp->engines.empty()) {
+            double perEngineForce = force / static_cast<double>(bp->engines.size());
+            for (const auto& engine : bp->engines) {
+                Vec2 worldDir = rotateVec(engine.local_dir, body->angle);
+                totalForce += worldDir * perEngineForce;
+            }
+        } else {
+            totalForce = Vec2{-std::sin(body->angle), std::cos(body->angle)} * force;
+        }
+        Vec2 accelVec = totalForce / std::max(1.0, body->mass);
+        body->velocity += accelVec * effectiveDt;
         ship.fuelMass -= fuelUsed;
     }
 }

@@ -1,6 +1,7 @@
 #include "gameplay/EconomySystem.hpp"
 
 #include <algorithm>
+#include <cmath>
 
 #include "util/Logger.hpp"
 
@@ -14,6 +15,15 @@ using orbital::core::ShipClass;
 using orbital::core::Station;
 using orbital::core::World;
 using orbital::util::Logger;
+using orbital::util::Vec2;
+
+namespace {
+Vec2 rotateVec(const Vec2& v, double angle) {
+    double c = std::cos(angle);
+    double s = std::sin(angle);
+    return {v.x * c - v.y * s, v.x * s + v.y * c};
+}
+}
 
 void EconomySystem::processSell(World& world) {
     auto commands = world.commandQueues.sellCommands;
@@ -73,28 +83,52 @@ void EconomySystem::processBuy(World& world) {
                         continue;
                     }
                     player.credits -= offer.price;
+                    const auto* bp = world.findBlueprint(cls->blueprintId);
+                    auto* stationBody = world.findBodyById(station->bodyId);
+                    Vec2 dockPos = stationBody ? stationBody->position : Vec2{0.0, 0.0};
+                    double dockAngle = stationBody ? stationBody->angle : 0.0;
+                    if (stationBody && !station->dockingPorts.empty()) {
+                        const auto& port = station->dockingPorts.front();
+                        dockPos = stationBody->position + rotateVec(port.localPosition, stationBody->angle);
+                        Vec2 fwd = rotateVec(port.localForward, stationBody->angle);
+                        dockAngle = std::atan2(fwd.y, fwd.x);
+                    }
+
                     orbital::core::Body body;
                     body.id = world.nextBodyId++;
                     body.type = core::BodyType::Ship;
-                    body.mass = cls->baseMass;
+                    body.mass = bp && bp->mass > 0.0 ? bp->mass : cls->baseMass;
+                    body.inertia = bp && bp->moment_of_inertia > 0.0 ? bp->moment_of_inertia : body.mass;
                     body.colliderId = 0;
+                    body.position = dockPos;
+                    body.velocity = stationBody ? stationBody->velocity : Vec2{0.0, 0.0};
+                    body.angle = dockAngle;
                     world.bodies.push_back(body);
 
                     CargoHold hold;
                     hold.id = world.nextCargoHoldId++;
                     hold.capacityMass = cls->cargoCapacity;
+                    hold.currentMass = 0.0;
                     world.cargoHolds.push_back(hold);
 
                     Ship ship;
                     ship.id = world.nextShipId++;
                     ship.shipClassId = cls->id;
+                    ship.blueprintId = cls->blueprintId;
                     ship.bodyId = body.id;
-                    ship.fuelMass = 100.0;
-                    ship.maxFuelMass = 100.0;
+                    double fuelCap = cls->maxFuelMass > 0.0 ? cls->maxFuelMass : 100.0;
+                    ship.fuelMass = fuelCap;
+                    ship.maxFuelMass = fuelCap;
                     ship.cargoHoldId = hold.id;
                     ship.ownerPlayerId = player.id;
+                    ship.docked = true;
+                    ship.dockedStationId = station->id;
+                    ship.atStationId = station->id;
                     world.ships.push_back(ship);
                     player.ownedShipIds.push_back(ship.id);
+                    if (player.activeShipId == -1) {
+                        player.activeShipId = ship.id;
+                    }
                     break;
                 }
                 break;
