@@ -118,6 +118,14 @@ json makeWorldState(orbital::core::World& world, orbital::core::Player& player) 
         s["station_id"] = station.id;
         s["body_id"] = station.bodyId;
         s["name"] = "Station " + std::to_string(station.id);
+        json verts = json::array();
+        for (const auto& v : station.shapeVertices) {
+            verts.push_back({v.x, v.y});
+        }
+        if (!verts.empty()) {
+            s["shape_vertices"] = verts;
+            s["shape_scale_m"] = station.shapeScaleMeters;
+        }
         json market;
         market["basePricePerKg"] = station.market.basePricePerKg;
         market["purityMultiplier"] = station.market.purityMultiplier;
@@ -153,6 +161,18 @@ json makeWorldState(orbital::core::World& world, orbital::core::Player& player) 
         sc["ship_class_id"] = shipClass.id;
         sc["cargo_capacity"] = shipClass.cargoCapacity;
         sc["max_rotation_rate"] = shipClass.maxRotationRate;
+        sc["max_fuel_mass"] = shipClass.maxFuelMass;
+        sc["engine_type"] = shipClass.engineType;
+        sc["weapon_type"] = shipClass.weaponType;
+        sc["collider_shape_id"] = shipClass.colliderShapeId;
+        json verts = json::array();
+        for (const auto& v : shipClass.shapeVertices) {
+            verts.push_back({v.x, v.y});
+        }
+        if (!verts.empty()) {
+            sc["shape_vertices"] = verts;
+            sc["shape_scale_m"] = shipClass.shapeScaleMeters;
+        }
         json engine;
         engine["name"] = shipClass.engine.name;
         engine["max_thrust"] = shipClass.engine.maxThrust;
@@ -191,8 +211,9 @@ int spawnShipForPlayer(orbital::core::World& world, orbital::core::Player& playe
     ship.id = world.nextShipId++;
     ship.shipClassId = shipClass->id;
     ship.bodyId = body.id;
-    ship.fuelMass = 200.0;
-    ship.maxFuelMass = 200.0;
+    double fuelCap = shipClass->maxFuelMass > 0.0 ? shipClass->maxFuelMass : 200.0;
+    ship.fuelMass = fuelCap;
+    ship.maxFuelMass = fuelCap;
     ship.cargoHoldId = hold.id;
     ship.ownerPlayerId = player.id;
     world.ships.push_back(ship);
@@ -238,8 +259,9 @@ int spawnDockedShipForPlayer(orbital::core::World& world, orbital::core::Player&
     ship.id = world.nextShipId++;
     ship.shipClassId = shipClass->id;
     ship.bodyId = body.id;
-    ship.fuelMass = 200.0;
-    ship.maxFuelMass = 200.0;
+    double fuelCap = shipClass->maxFuelMass > 0.0 ? shipClass->maxFuelMass : 200.0;
+    ship.fuelMass = fuelCap;
+    ship.maxFuelMass = fuelCap;
     ship.cargoHoldId = hold.id;
     ship.ownerPlayerId = player.id;
     ship.docked = true;

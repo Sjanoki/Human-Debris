@@ -77,7 +77,20 @@ bool ConfigLoader::loadShipClasses(std::vector<ShipClass>& shipClasses) {
         cls.cargoCapacity = entry.value("cargoCapacity", 0.0);
         cls.radarRange = entry.value("radarRange", 1000.0);
         cls.maxRotationRate = entry.value("maxRotationRate", 0.2);
+        cls.maxFuelMass = entry.value("maxFuel", 0.0);
         cls.colliderShapeId = entry.value("colliderShapeId", "ship_triangle");
+        cls.engineType = entry.value("engineType", "");
+        cls.weaponType = entry.value("weaponType", "none");
+        auto vertices = entry.value("shape_vertices", json::array());
+        if (vertices.is_array()) {
+            for (const auto& v : vertices) {
+                auto arr = v.get<std::vector<double>>();
+                if (arr.size() == 2) {
+                    cls.shapeVertices.emplace_back(arr[0], arr[1]);
+                }
+            }
+        }
+        cls.shapeScaleMeters = entry.value("shape_scale_m", 0.0);
         auto engineJson = entry.value("engine", json::object());
         cls.engine.name = engineJson.value("name", "Engine");
         cls.engine.maxThrust = engineJson.value("maxThrust", 10.0);
@@ -110,6 +123,16 @@ bool ConfigLoader::loadStations(std::vector<Station>& stations, std::vector<Body
         if (velocity.size() == 2) {
             body.velocity = {velocity[0], velocity[1]};
         }
+        auto vertices = entry.value("shape_vertices", json::array());
+        if (vertices.is_array()) {
+            for (const auto& v : vertices) {
+                auto arr = v.get<std::vector<double>>();
+                if (arr.size() == 2) {
+                    station.shapeVertices.emplace_back(arr[0], arr[1]);
+                }
+            }
+        }
+        station.shapeScaleMeters = entry.value("shape_scale_m", station.shapeScaleMeters);
         std::string colliderId = entry.value("colliderShapeId", "station_circle");
         auto collider = findColliderLocal(colliders, colliderId);
         if (!collider) {

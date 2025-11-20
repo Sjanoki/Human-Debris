@@ -5,7 +5,16 @@
     "cargoCapacity": 200.0,
     "radarRange": 2000.0,
     "maxRotationRate": 0.5,
+    "maxFuel": 200.0,
+    "engineType": "chemical_main",
+    "weaponType": "none",
     "colliderShapeId": "ship_triangle",
+    "shape_vertices": [
+      [-1.0, -0.4],
+      [1.0, 0.0],
+      [-1.0, 0.4]
+    ],
+    "shape_scale_m": 50.0,
     "engine": {
       "name": "IonJet",
       "maxThrust": 15000.0,
@@ -18,7 +27,16 @@
     "cargoCapacity": 800.0,
     "radarRange": 1500.0,
     "maxRotationRate": 0.3,
+    "maxFuel": 350.0,
+    "engineType": "chemical_main",
+    "weaponType": "mining_laser",
     "colliderShapeId": "ship_triangle",
+    "shape_vertices": [
+      [-1.1, -0.5],
+      [1.2, 0.0],
+      [-1.1, 0.5]
+    ],
+    "shape_scale_m": 65.0,
     "engine": {
       "name": "Hauler",
       "maxThrust": 22000.0,

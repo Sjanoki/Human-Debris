@@ -1,18 +1,2802 @@
 [
   {
-    "position": [6500000.0, 20000.0],
-    "velocity": [0.0, 7800.0],
-    "remainingMass": 5000.0,
-    "purity": 0.6,
-    "density": 2600.0,
+    "position": [
+      -7536377.402377702,
+      -9043402.080800088
+    ],
+    "velocity": [
+      4427.51112887411,
+      -3689.69493143122
+    ],
+    "remainingMass": 3287.690569399275,
+    "purity": 0.373,
+    "density": 2694.6,
     "colliderShapeId": "asteroid_circle"
   },
   {
-    "position": [6600000.0, -15000.0],
-    "velocity": [0.0, 7700.0],
-    "remainingMass": 4500.0,
+    "position": [
+      -5417071.590819444,
+      -10918272.785971543
+    ],
+    "velocity": [
+      5162.867595582288,
+      -2561.542830760338
+    ],
+    "remainingMass": 2065.102412091205,
+    "purity": 0.482,
+    "density": 2411.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      2349870.748837917,
+      11770293.411396919
+    ],
+    "velocity": [
+      -5651.85858704803,
+      1128.3607558510591
+    ],
+    "remainingMass": 1672.4838029451134,
+    "purity": 0.359,
+    "density": 2660.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11395880.302850764,
+      -3306265.966754682
+    ],
+    "velocity": [
+      1605.90040165128,
+      -5535.141134904293
+    ],
+    "remainingMass": 5330.226945193406,
+    "purity": 0.695,
+    "density": 2402.6,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      4155595.772758495,
+      -11358813.095035445
+    ],
+    "velocity": [
+      5412.544834308022,
+      1980.1671393947745
+    ],
+    "remainingMass": 3711.628357366947,
+    "purity": 0.336,
+    "density": 2782.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -6110482.97091524,
+      10099932.830882229
+    ],
+    "velocity": [
+      -4931.153156301542,
+      -2983.3591859564385
+    ],
+    "remainingMass": 2128.6564494175163,
+    "purity": 0.716,
+    "density": 2641.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      4254205.4728870345,
+      -11338448.118125616
+    ],
+    "velocity": [
+      5396.0754189823865,
+      2024.6168911642005
+    ],
+    "remainingMass": 4985.482594455554,
+    "purity": 0.785,
+    "density": 2551.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11513932.83819236,
+      -3905008.635370032
+    ],
+    "velocity": [
+      1851.1177435882357,
+      -5458.027719122186
+    ],
+    "remainingMass": 5520.378390367599,
+    "purity": 0.724,
+    "density": 2630.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -3317497.8444051966,
+      -11305292.160094189
+    ],
+    "velocity": [
+      5530.204547413699,
+      -1622.8188891857806
+    ],
+    "remainingMass": 2981.3387917350547,
+    "purity": 0.409,
+    "density": 2431.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      1274341.4006939116,
+      11739517.456389248
+    ],
+    "velocity": [
+      -5729.734351605392,
+      621.9708541133358
+    ],
+    "remainingMass": 3306.8284202155987,
+    "purity": 0.6,
+    "density": 2545.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -8128939.991599557,
+      8636741.178240573
+    ],
+    "velocity": [
+      -4196.844241833589,
+      -3950.0888462313833
+    ],
+    "remainingMass": 3235.3558433192366,
+    "purity": 0.765,
+    "density": 2659.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -9165609.557710215,
+      -7498535.615316615
+    ],
+    "velocity": [
+      3649.423733144795,
+      -4460.7633762947835
+    ],
+    "remainingMass": 6239.32418667727,
+    "purity": 0.34,
+    "density": 2551.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      12041064.780420875,
+      -793770.7551521808
+    ],
+    "velocity": [
+      379.1114073744506,
+      5750.911060356601
+    ],
+    "remainingMass": 5120.1733345352,
+    "purity": 0.627,
+    "density": 2737.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      1930487.3835263478,
+      -11711907.063110238
+    ],
+    "velocity": [
+      5686.659779681844,
+      937.3388039989428
+    ],
+    "remainingMass": 1708.6515853762455,
+    "purity": 0.423,
+    "density": 2507.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      2964043.6918459707,
+      11847445.388902877
+    ],
+    "velocity": [
+      -5591.07046980219,
+      1398.797513952341
+    ],
+    "remainingMass": 7196.389572072348,
+    "purity": 0.423,
+    "density": 2662.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -9668697.080711203,
+      7438513.236332659
+    ],
+    "velocity": [
+      -3514.315795315415,
+      -4567.963219437073
+    ],
+    "remainingMass": 4482.537041818092,
+    "purity": 0.396,
+    "density": 2498.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11013409.818862766,
+      -4470409.048820275
+    ],
+    "velocity": [
+      2167.6320564121465,
+      -5340.23171326374
+    ],
+    "remainingMass": 5299.808936453013,
+    "purity": 0.744,
+    "density": 2559.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      2344612.367866231,
+      12012138.033373242
+    ],
+    "velocity": [
+      -5656.64729816676,
+      1104.103630768425
+    ],
+    "remainingMass": 4811.920908897019,
+    "purity": 0.3,
+    "density": 2418.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      9310220.753975693,
+      7667575.247962866
+    ],
+    "velocity": [
+      -3663.926265533421,
+      4448.859157589465
+    ],
+    "remainingMass": 6648.515868359266,
+    "purity": 0.482,
+    "density": 2425.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -9005991.483528294,
+      8286383.139286736
+    ],
+    "velocity": [
+      -3902.365283879633,
+      -4241.255554019866
+    ],
+    "remainingMass": 4939.24324314439,
+    "purity": 0.784,
+    "density": 2744.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      12074461.651153343,
+      872534.1535206152
+    ],
+    "velocity": [
+      -415.39565640589666,
+      5748.404120447034
+    ],
+    "remainingMass": 5931.117398672736,
+    "purity": 0.545,
+    "density": 2506.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -7475092.0393645605,
+      -9147832.830442484
+    ],
+    "velocity": [
+      4462.890619712455,
+      -3646.822013728653
+    ],
+    "remainingMass": 4325.9741293491825,
+    "purity": 0.5,
+    "density": 2781.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8449895.824332017,
+      -8359808.688420176
+    ],
+    "velocity": [
+      4053.4356755351964,
+      4097.116389319671
+    ],
+    "remainingMass": 4753.809734826938,
+    "purity": 0.348,
+    "density": 2765.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8176566.764379714,
+      -8650502.865753632
+    ],
+    "velocity": [
+      4188.45579687363,
+      3958.982384523707
+    ],
+    "remainingMass": 5653.171716629034,
+    "purity": 0.585,
+    "density": 2461.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      943805.2502043014,
+      -11981787.652925214
+    ],
+    "velocity": [
+      5745.596083221939,
+      452.5805252085437
+    ],
+    "remainingMass": 6561.072111098629,
+    "purity": 0.542,
+    "density": 2400.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -5287491.105891641,
+      10514752.010232903
+    ],
+    "velocity": [
+      -5149.023381091877,
+      -2589.2589102487414
+    ],
+    "remainingMass": 7539.141005720011,
+    "purity": 0.733,
+    "density": 2732.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -4167670.848300125,
+      11026461.115278197
+    ],
+    "velocity": [
+      -5391.15112420156,
+      -2037.6930679946818
+    ],
+    "remainingMass": 7207.062394826264,
+    "purity": 0.771,
+    "density": 2434.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11747562.701215431,
+      1036752.5892833179
+    ],
+    "velocity": [
+      -506.6650170777892,
+      -5741.0795190280105
+    ],
+    "remainingMass": 6443.914074172005,
+    "purity": 0.671,
+    "density": 2451.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11879190.050144441,
+      1859879.7362445237
+    ],
+    "velocity": [
+      -891.4922357146113,
+      -5694.027140521363
+    ],
+    "remainingMass": 3222.868088110384,
+    "purity": 0.73,
+    "density": 2569.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      2857253.1151318243,
+      11674294.469409205
+    ],
+    "velocity": [
+      -5598.163204503679,
+      1370.1358396430753
+    ],
+    "remainingMass": 6244.551949084846,
+    "purity": 0.361,
+    "density": 2524.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      12066335.224511994,
+      -367865.530428779
+    ],
+    "velocity": [
+      175.62657803176793,
+      5760.716864108336
+    ],
+    "remainingMass": 4347.650545444276,
+    "purity": 0.535,
+    "density": 2448.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      1887445.5928707086,
+      11771929.962499704
+    ],
+    "velocity": [
+      -5690.711622542666,
+      912.416961915521
+    ],
+    "remainingMass": 5324.006669972016,
+    "purity": 0.377,
+    "density": 2488.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10882604.36719205,
+      5204151.070708971
+    ],
+    "velocity": [
+      -2486.425054029092,
+      5199.460927252917
+    ],
+    "remainingMass": 2988.121594772503,
+    "purity": 0.748,
+    "density": 2743.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10716744.770475505,
+      5113610.26384649
+    ],
+    "velocity": [
+      -2481.9897630266323,
+      5201.579596580671
+    ],
+    "remainingMass": 5848.355558925824,
+    "purity": 0.368,
+    "density": 2452.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11059736.196760722,
+      -4743607.7567471275
+    ],
+    "velocity": [
+      2271.8172594347216,
+      5296.748986224271
+    ],
+    "remainingMass": 4572.3616710266615,
+    "purity": 0.682,
+    "density": 2723.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      4317984.890456803,
+      10988588.687741907
+    ],
+    "velocity": [
+      -5364.114327644436,
+      2107.8379831697225
+    ],
+    "remainingMass": 4301.832685641453,
+    "purity": 0.483,
+    "density": 2586.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -1584011.7374748297,
+      -11978939.482846832
+    ],
+    "velocity": [
+      5713.65657678499,
+      -755.5342519667527
+    ],
+    "remainingMass": 7897.0738738787795,
+    "purity": 0.304,
+    "density": 2561.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -6477841.103361216,
+      10306996.662297629
+    ],
+    "velocity": [
+      -4879.679206579075,
+      -3066.828055860508
+    ],
+    "remainingMass": 3116.2661704818565,
+    "purity": 0.355,
+    "density": 2579.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10489542.310625572,
+      5606214.544167831
+    ],
+    "velocity": [
+      -2716.6327860688984,
+      -5082.972534746657
+    ],
+    "remainingMass": 3123.741911233653,
+    "purity": 0.758,
+    "density": 2577.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      7742743.74493259,
+      -9199470.116224693
+    ],
+    "velocity": [
+      4409.470792808049,
+      3711.2357525096804
+    ],
+    "remainingMass": 1828.824141911728,
+    "purity": 0.8,
+    "density": 2734.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11973816.865904057,
+      -2362486.2849406535
+    ],
+    "velocity": [
+      1115.6346965330242,
+      5654.384379154374
+    ],
+    "remainingMass": 7016.522273692985,
+    "purity": 0.341,
+    "density": 2594.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      2699087.0840473105,
+      11643760.964377398
+    ],
+    "velocity": [
+      -5614.522384157918,
+      1301.4768077545682
+    ],
+    "remainingMass": 1881.130099819163,
+    "purity": 0.458,
+    "density": 2794.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -1157546.3340497976,
+      12081025.295975637
+    ],
+    "velocity": [
+      -5737.118585485248,
+      -549.7033922153624
+    ],
+    "remainingMass": 4457.554387704431,
+    "purity": 0.483,
+    "density": 2782.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      12021795.210558766,
+      -345843.27291036496
+    ],
+    "velocity": [
+      165.73286395269002,
+      5761.009989675366
+    ],
+    "remainingMass": 6169.653789426119,
+    "purity": 0.335,
+    "density": 2518.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11806099.621997522,
+      -2351512.9518514127
+    ],
+    "velocity": [
+      1125.8254580753153,
+      5652.364153279832
+    ],
+    "remainingMass": 5024.268808932782,
+    "purity": 0.661,
+    "density": 2422.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10361512.120729942,
+      -6055733.221925006
+    ],
+    "velocity": [
+      2908.1328352712553,
+      -4975.8885533892835
+    ],
+    "remainingMass": 7042.679298313855,
+    "purity": 0.337,
+    "density": 2784.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10379529.133178,
+      5715664.473713619
+    ],
+    "velocity": [
+      -2780.0724164380777,
+      5048.554331954196
+    ],
+    "remainingMass": 5367.72819192518,
+    "purity": 0.621,
+    "density": 2494.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8890128.362709435,
+      8336475.457058374
+    ],
+    "velocity": [
+      -3942.320134250843,
+      4204.142652481448
+    ],
+    "remainingMass": 3100.399760626062,
+    "purity": 0.577,
+    "density": 2647.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10522502.081307745,
+      5851706.3976150425
+    ],
+    "velocity": [
+      -2801.0988617315234,
+      -5036.918566955366
+    ],
+    "remainingMass": 4898.087650957733,
+    "purity": 0.764,
+    "density": 2481.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -2503506.304861798,
+      -11607663.469746063
+    ],
+    "velocity": [
+      5633.849075430633,
+      -1215.0917984262476
+    ],
+    "remainingMass": 4072.608004143154,
+    "purity": 0.619,
+    "density": 2520.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -4895934.628113566,
+      11088098.063253472
+    ],
+    "velocity": [
+      -5272.306329405571,
+      -2327.9796932626555
+    ],
+    "remainingMass": 1971.5302442055226,
+    "purity": 0.502,
+    "density": 2799.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11791617.568021681,
+      -289267.96219264413
+    ],
+    "velocity": [
+      141.34308790785354,
+      5761.659970428141
+    ],
+    "remainingMass": 2885.5030297357625,
+    "purity": 0.396,
+    "density": 2773.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8925480.744097512,
+      -8290846.083446795
+    ],
+    "velocity": [
+      3922.443981949625,
+      4222.693061518975
+    ],
+    "remainingMass": 3901.9260768027457,
+    "purity": 0.337,
+    "density": 2733.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -3468893.8318363694,
+      -11543663.932034409
+    ],
+    "velocity": [
+      5519.5665288475675,
+      -1658.6406533541083
+    ],
+    "remainingMass": 7917.0149136047785,
+    "purity": 0.61,
+    "density": 2403.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      4871544.270125435,
+      -10861223.365379779
+    ],
+    "velocity": [
+      5258.6585338152945,
+      2358.6466263654042
+    ],
+    "remainingMass": 5812.026647279503,
+    "purity": 0.766,
+    "density": 2453.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8838774.445457216,
+      7834838.817747401
+    ],
+    "velocity": [
+      -3823.0307357762267,
+      4312.903833456481
+    ],
+    "remainingMass": 5095.953665751304,
     "purity": 0.4,
-    "density": 2400.0,
+    "density": 2641.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -2396410.972819488,
+      -11613048.573756745
+    ],
+    "velocity": [
+      5644.46871996661,
+      -1164.7645052334979
+    ],
+    "remainingMass": 5622.546732753018,
+    "purity": 0.395,
+    "density": 2595.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10076805.053405082,
+      -6817089.833456845
+    ],
+    "velocity": [
+      3229.4222777690698,
+      4773.6291472193525
+    ],
+    "remainingMass": 2099.940040132767,
+    "purity": 0.483,
+    "density": 2510.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      12127127.141809374,
+      270215.5314570726
+    ],
+    "velocity": [
+      -128.38753440549345,
+      5761.9632178921975
+    ],
+    "remainingMass": 5641.236952458968,
+    "purity": 0.394,
+    "density": 2696.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11339993.748197693,
+      -3817420.5821411936
+    ],
+    "velocity": [
+      1838.7600384949624,
+      -5462.20331040207
+    ],
+    "remainingMass": 1562.8530474542097,
+    "purity": 0.291,
+    "density": 2753.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      9897351.175282452,
+      -6824083.727893475
+    ],
+    "velocity": [
+      3271.5239376423674,
+      4744.874561963289
+    ],
+    "remainingMass": 6924.867629259109,
+    "purity": 0.57,
+    "density": 2459.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8289831.30714486,
+      8548584.89541431
+    ],
+    "velocity": [
+      -4137.471169104593,
+      4012.2357617868865
+    ],
+    "remainingMass": 7343.379676826835,
+    "purity": 0.688,
+    "density": 2744.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      9548294.579574067,
+      -7036300.075801825
+    ],
+    "velocity": [
+      3419.0644649965343,
+      4639.68766917896
+    ],
+    "remainingMass": 3121.943304949009,
+    "purity": 0.307,
+    "density": 2712.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8924507.662824094,
+      -7954662.155463186
+    ],
+    "velocity": [
+      3834.8484212638314,
+      4302.399454869762
+    ],
+    "remainingMass": 5534.299815979633,
+    "purity": 0.335,
+    "density": 2772.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8064154.080893464,
+      -9192799.397930007
+    ],
+    "velocity": [
+      4332.614593168828,
+      3800.6781329644114
+    ],
+    "remainingMass": 6770.016179612579,
+    "purity": 0.735,
+    "density": 2409.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -1005020.3319760925,
+      -11877002.954562783
+    ],
+    "velocity": [
+      5742.869515103084,
+      -485.95598137381717
+    ],
+    "remainingMass": 7550.303259314116,
+    "purity": 0.691,
+    "density": 2745.6,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      4428280.282172572,
+      -11032518.50538256
+    ],
+    "velocity": [
+      5348.619395135094,
+      2146.8521256290637
+    ],
+    "remainingMass": 6617.934309380563,
+    "purity": 0.309,
+    "density": 2748.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      7483050.141332646,
+      -9210002.590939362
+    ],
+    "velocity": [
+      4473.068599791162,
+      3634.330857929099
+    ],
+    "remainingMass": 6807.812936380038,
+    "purity": 0.503,
+    "density": 2522.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      3336149.2978296783,
+      -11390746.44303287
+    ],
+    "velocity": [
+      5531.046689015924,
+      1619.9462976467198
+    ],
+    "remainingMass": 1653.8188255594348,
+    "purity": 0.356,
+    "density": 2531.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8046601.013056671,
+      -9202227.907395406
+    ],
+    "velocity": [
+      4338.644989368037,
+      3793.792711728587
+    ],
+    "remainingMass": 3314.3124526921642,
+    "purity": 0.603,
+    "density": 2559.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11933191.898828266,
+      -1420013.567456386
+    ],
+    "velocity": [
+      681.0215208223777,
+      5723.016090446549
+    ],
+    "remainingMass": 7605.041412110652,
+    "purity": 0.313,
+    "density": 2788.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      5303184.140534739,
+      11011535.978363797
+    ],
+    "velocity": [
+      -5192.58126753264,
+      2500.7605369971848
+    ],
+    "remainingMass": 3225.531356399296,
+    "purity": 0.31,
+    "density": 2573.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -1600749.449131004,
+      -11802506.617665457
+    ],
+    "velocity": [
+      5711.105066049777,
+      -774.5853134896839
+    ],
+    "remainingMass": 5440.357546489931,
+    "purity": 0.531,
+    "density": 2554.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10532825.580392221,
+      -5499804.511929508
+    ],
+    "velocity": [
+      2667.633840503019,
+      -5108.858304585912
+    ],
+    "remainingMass": 6107.104344922109,
+    "purity": 0.251,
+    "density": 2770.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11753741.26918002,
+      -2896289.5949427327
+    ],
+    "velocity": [
+      1378.9348411613498,
+      -5596.002339810505
+    ],
+    "remainingMass": 6322.675505956598,
+    "purity": 0.619,
+    "density": 2545.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10930101.962518072,
+      5141118.947533373
+    ],
+    "velocity": [
+      -2453.0754204566338,
+      5215.2779853891625
+    ],
+    "remainingMass": 3646.3002342768764,
+    "purity": 0.423,
+    "density": 2739.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -2248668.0716813034,
+      -11689841.348661885
+    ],
+    "velocity": [
+      5659.633652090954,
+      -1088.692062730755
+    ],
+    "remainingMass": 3510.350304356246,
+    "purity": 0.475,
+    "density": 2561.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -3344685.4855721444,
+      11338052.757065753
+    ],
+    "velocity": [
+      -5527.88392715911,
+      -1630.7062185413145
+    ],
+    "remainingMass": 4232.901169523904,
+    "purity": 0.767,
+    "density": 2670.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      9876450.454950761,
+      -6912997.369461152
+    ],
+    "velocity": [
+      3304.9229021386445,
+      4721.672171408431
+    ],
+    "remainingMass": 3456.1741846761743,
+    "purity": 0.551,
+    "density": 2400.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -2750606.4307333985,
+      11645926.683686761
+    ],
+    "velocity": [
+      -5609.068569119902,
+      -1324.7842353547792
+    ],
+    "remainingMass": 5269.901077771932,
+    "purity": 0.61,
+    "density": 2586.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11087788.210508982,
+      4216832.686891971
+    ],
+    "velocity": [
+      -2048.7341281419444,
+      -5386.965004111295
+    ],
+    "remainingMass": 4575.710208410621,
+    "purity": 0.746,
+    "density": 2718.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      5705072.1955817165,
+      10329991.073366266
+    ],
+    "velocity": [
+      -5045.106900651492,
+      2786.323714921156
+    ],
+    "remainingMass": 4850.4380644489065,
+    "purity": 0.598,
+    "density": 2534.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      5051790.805538488,
+      -11017579.244708927
+    ],
+    "velocity": [
+      5238.9258619109205,
+      2402.157217322432
+    ],
+    "remainingMass": 5873.171858621586,
+    "purity": 0.374,
+    "density": 2479.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11737924.223232739,
+      1815687.5570541995
+    ],
+    "velocity": [
+      -881.0355855109364,
+      5695.6544646244765
+    ],
+    "remainingMass": 4588.3862374222335,
+    "purity": 0.717,
+    "density": 2429.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10360887.88108478,
+      6176631.705042755
+    ],
+    "velocity": [
+      -2951.211264793891,
+      -4950.4601355719415
+    ],
+    "remainingMass": 2763.8290388081105,
+    "purity": 0.633,
+    "density": 2597.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      456285.19323344174,
+      12066283.740064137
+    ],
+    "velocity": [
+      -5759.277086082728,
+      217.78642991650904
+    ],
+    "remainingMass": 1536.0413178972065,
+    "purity": 0.663,
+    "density": 2708.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      9379868.396683972,
+      7426778.841972552
+    ],
+    "velocity": [
+      -3577.66609037948,
+      4518.518432969167
+    ],
+    "remainingMass": 2643.263431092456,
+    "purity": 0.777,
+    "density": 2607.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11293137.605421487,
+      3686502.368502144
+    ],
+    "velocity": [
+      -1788.506033919481,
+      5478.86390139114
+    ],
+    "remainingMass": 7014.186257785788,
+    "purity": 0.501,
+    "density": 2720.6,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -6056343.644907928,
+      -10629960.814144693
+    ],
+    "velocity": [
+      5007.659201281369,
+      -2853.077777971601
+    ],
+    "remainingMass": 5370.440070051229,
+    "purity": 0.773,
+    "density": 2756.6,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -9197376.997501994,
+      -7870538.118722882
+    ],
+    "velocity": [
+      3747.217267044719,
+      -4378.934372298269
+    ],
+    "remainingMass": 4781.058071358613,
+    "purity": 0.707,
+    "density": 2619.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      9676383.284682637,
+      -7293023.762673224
+    ],
+    "velocity": [
+      3468.9050479312546,
+      4602.542911453449
+    ],
+    "remainingMass": 4585.383839349846,
+    "purity": 0.393,
+    "density": 2498.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -7866881.867242301,
+      -9229876.634230724
+    ],
+    "velocity": [
+      4386.313157290142,
+      -3738.5773189164775
+    ],
+    "remainingMass": 4888.448783381884,
+    "purity": 0.595,
+    "density": 2509.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10514874.037545595,
+      5565931.233431624
+    ],
+    "velocity": [
+      -2696.3308565822904,
+      5093.771038746789
+    ],
+    "remainingMass": 3266.1481960342,
+    "purity": 0.426,
+    "density": 2616.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      7659911.239920896,
+      9068987.353689665
+    ],
+    "velocity": [
+      -4403.0088111622235,
+      3718.899957267088
+    ],
+    "remainingMass": 6010.67377994384,
+    "purity": 0.639,
+    "density": 2425.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10050901.889067156,
+      6593229.094637388
+    ],
+    "velocity": [
+      -3161.2262824434156,
+      -4819.061306366864
+    ],
+    "remainingMass": 4202.532521670513,
+    "purity": 0.364,
+    "density": 2568.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      9951472.856044743,
+      -6777788.10710337
+    ],
+    "velocity": [
+      3244.343636434346,
+      4763.500588019413
+    ],
+    "remainingMass": 6020.899412236792,
+    "purity": 0.721,
+    "density": 2706.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -8593987.136099821,
+      8031659.700171599
+    ],
+    "velocity": [
+      -3935.2446676888494,
+      -4210.7663065954885
+    ],
+    "remainingMass": 3786.4322173668606,
+    "purity": 0.664,
+    "density": 2741.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11452728.17633062,
+      -3450167.148865788
+    ],
+    "velocity": [
+      1662.440774090315,
+      5518.423158473381
+    ],
+    "remainingMass": 6358.85184835733,
+    "purity": 0.55,
+    "density": 2641.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      2183877.653798743,
+      11662613.501448222
+    ],
+    "velocity": [
+      -5664.930753866887,
+      1060.784161470404
+    ],
+    "remainingMass": 4332.933844303137,
+    "purity": 0.266,
+    "density": 2534.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -5148040.60440889,
+      -10788768.017938746
+    ],
+    "velocity": [
+      5201.567665203017,
+      -2482.0147678141975
+    ],
+    "remainingMass": 2572.790752822807,
+    "purity": 0.507,
+    "density": 2451.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -8466961.860317577,
+      -8180022.30167028
+    ],
+    "velocity": [
+      4004.494284371454,
+      -4144.964295355231
+    ],
+    "remainingMass": 4061.131666208081,
+    "purity": 0.56,
+    "density": 2410.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -7379094.209800995,
+      -9240281.610446291
+    ],
+    "velocity": [
+      4503.574348437544,
+      -3596.459588460389
+    ],
+    "remainingMass": 4501.039886334826,
+    "purity": 0.278,
+    "density": 2551.6,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      2843040.113621643,
+      11572782.488400837
+    ],
+    "velocity": [
+      -5596.973763942453,
+      1374.9866068704737
+    ],
+    "remainingMass": 6447.993101311176,
+    "purity": 0.459,
+    "density": 2700.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      5849218.944305798,
+      -10341515.618906004
+    ],
+    "velocity": [
+      5016.561711284232,
+      2837.395298545895
+    ],
+    "remainingMass": 2032.3905129506766,
+    "purity": 0.261,
+    "density": 2615.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11927978.964709846,
+      -6907.857870154325
+    ],
+    "velocity": [
+      3.337757041527522,
+      5763.392433516155
+    ],
+    "remainingMass": 5725.936606124187,
+    "purity": 0.68,
+    "density": 2660.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      324877.969569989,
+      -12211492.823950944
+    ],
+    "velocity": [
+      5761.3548526338,
+      153.27669544420897
+    ],
+    "remainingMass": 2795.8444353564637,
+    "purity": 0.261,
+    "density": 2461.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8477009.846674878,
+      8608082.607928613
+    ],
+    "velocity": [
+      -4106.4787086130655,
+      4043.9505559589747
+    ],
+    "remainingMass": 5165.802282545124,
+    "purity": 0.37,
+    "density": 2679.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      1254795.3504046148,
+      -11773862.893633174
+    ],
+    "velocity": [
+      5730.9388452775,
+      610.7728178485995
+    ],
+    "remainingMass": 5447.108710291056,
+    "purity": 0.661,
+    "density": 2445.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      5155716.5925146965,
+      -11082505.499681229
+    ],
+    "velocity": [
+      5225.598814874889,
+      2431.01223964658
+    ],
+    "remainingMass": 2202.6418727744426,
+    "purity": 0.264,
+    "density": 2524.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -5386549.949626894,
+      -10968664.314567672
+    ],
+    "velocity": [
+      5173.2509044768185,
+      -2540.5075403673
+    ],
+    "remainingMass": 4078.2538698580775,
+    "purity": 0.643,
+    "density": 2430.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -4396653.4269040525,
+      -11231162.066390663
+    ],
+    "velocity": [
+      5366.818304614258,
+      -2100.9437804450354
+    ],
+    "remainingMass": 2162.3584853988477,
+    "purity": 0.675,
+    "density": 2740.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -9543051.56563037,
+      -6971212.6947651105
+    ],
+    "velocity": [
+      3399.685175361774,
+      -4653.906336805535
+    ],
+    "remainingMass": 7894.9882848453635,
+    "purity": 0.68,
+    "density": 2538.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10749350.25715118,
+      5192716.551135268
+    ],
+    "velocity": [
+      -2506.951258436426,
+      -5189.595251188415
+    ],
+    "remainingMass": 4788.745132901006,
+    "purity": 0.438,
+    "density": 2739.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      5184700.591909533,
+      -10611811.235877529
+    ],
+    "velocity": [
+      5178.376973760247,
+      2530.0425690021484
+    ],
+    "remainingMass": 7745.119186894761,
+    "purity": 0.6,
+    "density": 2731.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -3172183.8254760457,
+      -11541014.712389272
+    ],
+    "velocity": [
+      5557.291337780406,
+      -1527.4869787871157
+    ],
+    "remainingMass": 6269.669476087047,
+    "purity": 0.781,
+    "density": 2508.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      4297525.463494641,
+      -11223696.472421566
+    ],
+    "velocity": [
+      5382.32981417811,
+      2060.8806988136807
+    ],
+    "remainingMass": 4642.733775240775,
+    "purity": 0.49,
+    "density": 2692.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -1403374.243387349,
+      12087629.102147058
+    ],
+    "velocity": [
+      -5724.938697881078,
+      -664.6656218257671
+    ],
+    "remainingMass": 6899.751622788922,
+    "purity": 0.298,
+    "density": 2752.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      461918.15699978865,
+      11974153.837033156
+    ],
+    "velocity": [
+      -5759.1098456245945,
+      222.16495980056484
+    ],
+    "remainingMass": 5467.156077498385,
+    "purity": 0.458,
+    "density": 2411.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      7020915.019616167,
+      -9542791.514212642
+    ],
+    "velocity": [
+      4642.318497883722,
+      3415.4915382035356
+    ],
+    "remainingMass": 2878.7790261683035,
+    "purity": 0.689,
+    "density": 2536.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8834649.107867965,
+      -8262925.472370952
+    ],
+    "velocity": [
+      3936.8595575436484,
+      4209.256502936184
+    ],
+    "remainingMass": 3295.7457424152017,
+    "purity": 0.256,
+    "density": 2779.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10396019.229953049,
+      6202354.652175201
+    ],
+    "velocity": [
+      -2952.8899054119593,
+      4949.4590300203
+    ],
+    "remainingMass": 4675.756004517118,
+    "purity": 0.667,
+    "density": 2676.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -7298294.638308884,
+      -9519935.743651368
+    ],
+    "velocity": [
+      4573.940542831575,
+      -3506.5326740207242
+    ],
+    "remainingMass": 6654.063642860064,
+    "purity": 0.301,
+    "density": 2488.6,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -4258662.902748564,
+      -11119349.651572578
+    ],
+    "velocity": [
+      5382.153354125239,
+      -2061.3414942730296
+    ],
+    "remainingMass": 5280.111304660387,
+    "purity": 0.51,
+    "density": 2612.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10814621.800396916,
+      5467272.365082374
+    ],
+    "velocity": [
+      -2600.2569753578,
+      -5143.478117522854
+    ],
+    "remainingMass": 3650.143431773546,
+    "purity": 0.637,
+    "density": 2508.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -104227.43024774396,
+      11817455.201785257
+    ],
+    "velocity": [
+      -5763.169249849176,
+      -50.82992156414973
+    ],
+    "remainingMass": 2751.797907434863,
+    "purity": 0.316,
+    "density": 2614.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      906613.1006257,
+      -11814136.386799473
+    ],
+    "velocity": [
+      5746.4977352410515,
+      440.98442399113316
+    ],
+    "remainingMass": 2906.500159210937,
+    "purity": 0.516,
+    "density": 2689.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11882308.408241019,
+      -1759176.9298991915
+    ],
+    "velocity": [
+      844.0705820120328,
+      5701.249717028294
+    ],
+    "remainingMass": 3339.4915712872075,
+    "purity": 0.305,
+    "density": 2477.6,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      1670375.2390945086,
+      11727774.235696465
+    ],
+    "velocity": [
+      -5705.809876480818,
+      812.6728350248173
+    ],
+    "remainingMass": 1591.9643871644148,
+    "purity": 0.544,
+    "density": 2509.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11869106.583272677,
+      -1933820.106047256
+    ],
+    "velocity": [
+      926.8023743159116,
+      5688.386488477706
+    ],
+    "remainingMass": 6033.213053916264,
+    "purity": 0.319,
+    "density": 2747.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -12158909.933242,
+      697601.4268116441
+    ],
+    "velocity": [
+      -330.12420271318285,
+      -5753.9309601451005
+    ],
+    "remainingMass": 5231.417427571159,
+    "purity": 0.508,
+    "density": 2576.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      4723457.654986074,
+      10796628.109003374
+    ],
+    "velocity": [
+      -5280.1871953589825,
+      2310.0490612323306
+    ],
+    "remainingMass": 7616.913378992671,
+    "purity": 0.513,
+    "density": 2728.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -9573531.93041163,
+      6890769.835120217
+    ],
+    "velocity": [
+      -3366.878661835838,
+      -4677.695111890882
+    ],
+    "remainingMass": 5591.397095187989,
+    "purity": 0.279,
+    "density": 2459.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10989816.096746672,
+      -4579628.05965594
+    ],
+    "velocity": [
+      2216.9116849675142,
+      -5319.962975847467
+    ],
+    "remainingMass": 7960.467797616431,
+    "purity": 0.315,
+    "density": 2705.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -9530203.094544245,
+      -7519577.056029102
+    ],
+    "velocity": [
+      3570.0055430036196,
+      -4524.573339692568
+    ],
+    "remainingMass": 2966.966390922725,
+    "purity": 0.537,
+    "density": 2580.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11393011.870474042,
+      4286990.553268766
+    ],
+    "velocity": [
+      -2029.7261668112687,
+      -5394.155649505766
+    ],
+    "remainingMass": 7935.203193034186,
+    "purity": 0.418,
+    "density": 2648.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -9352838.896853277,
+      -7700877.501103365
+    ],
+    "velocity": [
+      3663.416990708442,
+      -4449.27852977559
+    ],
+    "remainingMass": 7659.336302114957,
+    "purity": 0.364,
+    "density": 2484.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -6314813.104070558,
+      -10009971.552551856
+    ],
+    "velocity": [
+      4874.48378384334,
+      -3075.079076118473
+    ],
+    "remainingMass": 2629.7880641218244,
+    "purity": 0.291,
+    "density": 2401.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11467226.303729244,
+      3685845.0199824604
+    ],
+    "velocity": [
+      -1763.629975706218,
+      -5486.921977951191
+    ],
+    "remainingMass": 3393.1853787016794,
+    "purity": 0.377,
+    "density": 2682.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -3486908.127994414,
+      -11459162.249036452
+    ],
+    "velocity": [
+      5513.776779851849,
+      -1677.7869666021097
+    ],
+    "remainingMass": 5968.001980463077,
+    "purity": 0.758,
+    "density": 2715.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -8536875.578290448,
+      -8543100.713459257
+    ],
+    "velocity": [
+      4076.819621298673,
+      -4073.848948933609
+    ],
+    "remainingMass": 7568.844979895836,
+    "purity": 0.484,
+    "density": 2617.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -7314489.133481579,
+      -9759179.231060678
+    ],
+    "velocity": [
+      4611.824881556896,
+      -3456.55532939747
+    ],
+    "remainingMass": 6873.102537725387,
+    "purity": 0.289,
+    "density": 2466.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -4291901.976363984,
+      11334101.224331858
+    ],
+    "velocity": [
+      -5389.899399549901,
+      -2041.0017016320544
+    ],
+    "remainingMass": 5199.845820574101,
+    "purity": 0.409,
+    "density": 2449.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -4546050.713543584,
+      -11209083.211108672
+    ],
+    "velocity": [
+      5340.8596997095165,
+      -2166.08428999245
+    ],
+    "remainingMass": 7627.395564836265,
+    "purity": 0.525,
+    "density": 2597.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10306339.17950208,
+      5703275.47157063
+    ],
+    "velocity": [
+      -2790.546614851953,
+      5042.772359890107
+    ],
+    "remainingMass": 4308.1863170450215,
+    "purity": 0.427,
+    "density": 2500.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10264182.050599327,
+      6634526.456607002
+    ],
+    "velocity": [
+      -3128.642641843533,
+      4840.278783600346
+    ],
+    "remainingMass": 6933.730990390179,
+    "purity": 0.566,
+    "density": 2780.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      12082651.55565465,
+      -32461.136363435297
+    ],
+    "velocity": [
+      15.483821828605373,
+      5763.372600708279
+    ],
+    "remainingMass": 3251.8216687858503,
+    "purity": 0.272,
+    "density": 2702.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11865943.307938013,
+      2224874.7362417295
+    ],
+    "velocity": [
+      -1062.1321071622333,
+      -5664.678178879048
+    ],
+    "remainingMass": 7454.473121523989,
+    "purity": 0.35,
+    "density": 2634.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -7945280.247829835,
+      -8987614.744658943
+    ],
+    "velocity": [
+      4318.025753072544,
+      -3817.244697309255
+    ],
+    "remainingMass": 2093.0756409098767,
+    "purity": 0.441,
+    "density": 2533.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -5854817.39613516,
+      -10671067.588435687
+    ],
+    "velocity": [
+      5052.827497873688,
+      -2772.2982812217106
+    ],
+    "remainingMass": 3643.723813263275,
+    "purity": 0.632,
+    "density": 2515.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11437179.379629007,
+      -4101933.9742621705
+    ],
+    "velocity": [
+      1945.6842464527388,
+      5425.036064068051
+    ],
+    "remainingMass": 5075.627958316589,
+    "purity": 0.5,
+    "density": 2525.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -5431873.742340502,
+      10952726.19375478
+    ],
+    "velocity": [
+      -5163.297673201667,
+      -2560.6758133827843
+    ],
+    "remainingMass": 4127.137870504846,
+    "purity": 0.533,
+    "density": 2795.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -6589370.678921734,
+      -10053421.818352772
+    ],
+    "velocity": [
+      4820.272903006005,
+      -3159.378518613967
+    ],
+    "remainingMass": 4186.109210195589,
+    "purity": 0.353,
+    "density": 2544.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      488105.9723285034,
+      -12050314.720011601
+    ],
+    "velocity": [
+      5758.671185393125,
+      233.25878730773434
+    ],
+    "remainingMass": 6439.93848439661,
+    "purity": 0.362,
+    "density": 2619.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10755365.718569895,
+      -5254530.237705446
+    ],
+    "velocity": [
+      2529.9228679301104,
+      5178.435455391678
+    ],
+    "remainingMass": 6038.62518929412,
+    "purity": 0.317,
+    "density": 2789.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -9203171.540927993,
+      -7504265.432246989
+    ],
+    "velocity": [
+      3642.1502006769274,
+      -4466.704086800731
+    ],
+    "remainingMass": 2529.458064734011,
+    "purity": 0.553,
+    "density": 2620.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10197138.634150531,
+      6763504.696500163
+    ],
+    "velocity": [
+      -3185.6681452026733,
+      4802.93888697059
+    ],
+    "remainingMass": 7434.044210147092,
+    "purity": 0.504,
+    "density": 2447.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      5921734.56192417,
+      -10436203.629690338
+    ],
+    "velocity": [
+      5012.65464806913,
+      2844.2919791266636
+    ],
+    "remainingMass": 6157.921618946642,
+    "purity": 0.53,
+    "density": 2509.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      6207570.899945986,
+      -10538103.243579498
+    ],
+    "velocity": [
+      4965.876142351818,
+      2925.1970227925426
+    ],
+    "remainingMass": 3084.2508894883995,
+    "purity": 0.553,
+    "density": 2553.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      10586300.166137472,
+      -5659081.1542670475
+    ],
+    "velocity": [
+      2717.0636068221434,
+      5082.742255890611
+    ],
+    "remainingMass": 7215.620658452095,
+    "purity": 0.725,
+    "density": 2510.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      2974575.1556259193,
+      -11583337.440425476
+    ],
+    "velocity": [
+      5582.270120893572,
+      1433.5144857001585
+    ],
+    "remainingMass": 7572.6145589363805,
+    "purity": 0.529,
+    "density": 2728.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -2438659.9307875764,
+      11650821.889666937
+    ],
+    "velocity": [
+      -5641.144185172341,
+      -1180.7606723759116
+    ],
+    "remainingMass": 5315.095195692047,
+    "purity": 0.799,
+    "density": 2595.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      7149841.331825922,
+      9660463.76351939
+    ],
+    "velocity": [
+      -4632.605281124965,
+      3428.654516370294
+    ],
+    "remainingMass": 3743.305621004549,
+    "purity": 0.554,
+    "density": 2617.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11448544.766902922,
+      3299244.7714815577
+    ],
+    "velocity": [
+      -1595.9478237509632,
+      -5538.018962336432
+    ],
+    "remainingMass": 2726.240429096185,
+    "purity": 0.634,
+    "density": 2628.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      1250795.9119385374,
+      12067612.647247536
+    ],
+    "velocity": [
+      -5732.6822337430895,
+      594.1867469572796
+    ],
+    "remainingMass": 1783.7074441324626,
+    "purity": 0.66,
+    "density": 2682.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      4495510.108771011,
+      -11067113.726419361
+    ],
+    "velocity": [
+      5339.67628736284,
+      2168.9999145938946
+    ],
+    "remainingMass": 5813.977391649475,
+    "purity": 0.701,
+    "density": 2792.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11772696.627961453,
+      345639.20825951354
+    ],
+    "velocity": [
+      -169.13684261766946,
+      -5760.911057445918
+    ],
+    "remainingMass": 4764.892475864279,
+    "purity": 0.575,
+    "density": 2747.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8421849.474986523,
+      -8507972.728725862
+    ],
+    "velocity": [
+      4096.013084520752,
+      4054.550566310417
+    ],
+    "remainingMass": 4918.682064249149,
+    "purity": 0.501,
+    "density": 2689.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10193795.269862842,
+      6471100.264178071
+    ],
+    "velocity": [
+      -3088.834291367124,
+      -4865.779095253697
+    ],
+    "remainingMass": 2503.3479220150675,
+    "purity": 0.508,
+    "density": 2787.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -6386922.013486163,
+      10268190.692021864
+    ],
+    "velocity": [
+      -4893.912031234348,
+      -3044.0644726866444
+    ],
+    "remainingMass": 5723.938241765271,
+    "purity": 0.718,
+    "density": 2740.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      7574277.6119700605,
+      -9233165.446186105
+    ],
+    "velocity": [
+      4455.917126707664,
+      3655.339388243812
+    ],
+    "remainingMass": 3558.297500567098,
+    "purity": 0.645,
+    "density": 2703.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8189707.453871616,
+      -8463561.615801014
+    ],
+    "velocity": [
+      4141.7912924447855,
+      4007.7759883957942
+    ],
+    "remainingMass": 1944.7348566800842,
+    "purity": 0.597,
+    "density": 2768.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      12116862.925050035,
+      -195987.99699965198
+    ],
+    "velocity": [
+      93.20962072114332,
+      5762.639625201142
+    ],
+    "remainingMass": 4320.814567500317,
+    "purity": 0.304,
+    "density": 2653.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      8336419.434437473,
+      -8593952.45398723
+    ],
+    "velocity": [
+      4136.847133329995,
+      4012.879175703242
+    ],
+    "remainingMass": 6011.007558156024,
+    "purity": 0.747,
+    "density": 2418.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      3402243.22183309,
+      -11404129.743160702
+    ],
+    "velocity": [
+      5522.855168412516,
+      1647.6572070890504
+    ],
+    "remainingMass": 3936.4670835395464,
+    "purity": 0.33,
+    "density": 2612.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11113612.288645485,
+      -4886426.201390086
+    ],
+    "velocity": [
+      2319.7238011283475,
+      -5275.94398850215
+    ],
+    "remainingMass": 2604.893718942633,
+    "purity": 0.293,
+    "density": 2748.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -8671718.209974213,
+      -8113639.02770678
+    ],
+    "velocity": [
+      3937.6621236867472,
+      -4208.50573042453
+    ],
+    "remainingMass": 7433.388604153106,
+    "purity": 0.329,
+    "density": 2584.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -296918.4719488991,
+      11878846.576985374
+    ],
+    "velocity": [
+      -5761.593821864574,
+      -144.01428812900755
+    ],
+    "remainingMass": 1561.0833044566618,
+    "purity": 0.693,
+    "density": 2760.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -5199637.894658504,
+      -10632525.442162868
+    ],
+    "velocity": [
+      5177.45149835667,
+      -2531.935912596843
+    ],
+    "remainingMass": 4371.243593424793,
+    "purity": 0.44,
+    "density": 2635.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -7687228.931953087,
+      -9167108.066993153
+    ],
+    "velocity": [
+      4416.174775813116,
+      -3703.255842202278
+    ],
+    "remainingMass": 3125.638458650058,
+    "purity": 0.715,
+    "density": 2479.7,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -8979985.277256982,
+      7947734.66148416
+    ],
+    "velocity": [
+      -3819.7257484837382,
+      -4315.831170203913
+    ],
+    "remainingMass": 3041.837062529235,
+    "purity": 0.565,
+    "density": 2629.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11889166.22251142,
+      -546301.7413135179
+    ],
+    "velocity": [
+      264.5461575483436,
+      5757.318717411756
+    ],
+    "remainingMass": 7856.639149749607,
+    "purity": 0.612,
+    "density": 2509.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -11066689.996201431,
+      -4865874.682592702
+    ],
+    "velocity": [
+      2319.755460400421,
+      -5275.9300684595655
+    ],
+    "remainingMass": 6340.347467574614,
+    "purity": 0.277,
+    "density": 2642.6,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -12191416.578268444,
+      250728.234594559
+    ],
+    "velocity": [
+      -118.50468259300963,
+      -5762.174947321268
+    ],
+    "remainingMass": 3360.261984484764,
+    "purity": 0.689,
+    "density": 2642.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -7233557.201354493,
+      9656800.114809984
+    ],
+    "velocity": [
+      -4612.787268911593,
+      -3455.2709148633276
+    ],
+    "remainingMass": 5535.792560346977,
+    "purity": 0.623,
+    "density": 2688.4,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -6569663.344989811,
+      -10235406.267989155
+    ],
+    "velocity": [
+      4850.248645222799,
+      -3113.1642364076674
+    ],
+    "remainingMass": 5583.612673964839,
+    "purity": 0.747,
+    "density": 2658.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -4332308.114134937,
+      11160205.92961632
+    ],
+    "velocity": [
+      -5372.772507943036,
+      -2085.6699310353097
+    ],
+    "remainingMass": 5267.229734894618,
+    "purity": 0.653,
+    "density": 2436.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -3389110.3927378724,
+      11635249.097793097
+    ],
+    "velocity": [
+      -5533.4330693953025,
+      -1611.7760234771495
+    ],
+    "remainingMass": 2641.6604578879933,
+    "purity": 0.323,
+    "density": 2615.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11822547.72558226,
+      -2140795.16348362
+    ],
+    "velocity": [
+      1026.9197431998803,
+      5671.167368748662
+    ],
+    "remainingMass": 7437.66533413103,
+    "purity": 0.707,
+    "density": 2502.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      5423096.673867604,
+      -10694904.645817399
+    ],
+    "velocity": [
+      5140.310882696688,
+      2606.5125191648954
+    ],
+    "remainingMass": 6742.175209659483,
+    "purity": 0.661,
+    "density": 2535.5,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      9159375.30187833,
+      8092449.732151882
+    ],
+    "velocity": [
+      -3816.0080991674095,
+      4319.1186219438405
+    ],
+    "remainingMass": 2414.9205975382374,
+    "purity": 0.782,
+    "density": 2744.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -1972679.5714579648,
+      -12070233.689991096
+    ],
+    "velocity": [
+      5687.93031091912,
+      -929.5979031069593
+    ],
+    "remainingMass": 7787.25335745021,
+    "purity": 0.693,
+    "density": 2546.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      2975062.988585152,
+      -11384365.634400988
+    ],
+    "velocity": [
+      5576.132982160623,
+      1457.2043263021835
+    ],
+    "remainingMass": 4987.720003748884,
+    "purity": 0.5,
+    "density": 2669.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -5644791.92900864,
+      -10635417.42426166
+    ],
+    "velocity": [
+      5090.788779817149,
+      -2701.9572688370104
+    ],
+    "remainingMass": 6845.712457974033,
+    "purity": 0.767,
+    "density": 2443.3,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      1194565.1745612286,
+      11711245.732733916
+    ],
+    "velocity": [
+      -5733.6432655874205,
+      584.8404793765134
+    ],
+    "remainingMass": 7247.526493896539,
+    "purity": 0.559,
+    "density": 2766.1,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      2109720.4716985277,
+      11600055.836435592
+    ],
+    "velocity": [
+      -5670.376049097976,
+      1031.2802456894829
+    ],
+    "remainingMass": 6855.05978403791,
+    "purity": 0.75,
+    "density": 2520.9,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -9917517.667204201,
+      6443832.03902625
+    ],
+    "velocity": [
+      -3140.107138016087,
+      -4832.849122941223
+    ],
+    "remainingMass": 7650.699963732651,
+    "purity": 0.417,
+    "density": 2597.0,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      9983419.309803007,
+      6987640.456862338
+    ],
+    "velocity": [
+      -3304.8500497605974,
+      4721.7231634151
+    ],
+    "remainingMass": 2381.8163165911874,
+    "purity": 0.5,
+    "density": 2668.2,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -526286.379089573,
+      -12202723.836755091
+    ],
+    "velocity": [
+      5758.040691253227,
+      -248.33622612374973
+    ],
+    "remainingMass": 4224.323897195698,
+    "purity": 0.658,
+    "density": 2461.8,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      -10158874.115465997,
+      6017894.190728924
+    ],
+    "velocity": [
+      -2937.4043962563715,
+      -4958.6650316579235
+    ],
+    "remainingMass": 4680.755745632494,
+    "purity": 0.474,
+    "density": 2780.6,
+    "colliderShapeId": "asteroid_circle"
+  },
+  {
+    "position": [
+      11686518.668649677,
+      2436729.080136843
+    ],
+    "velocity": [
+      -1176.4114262765993,
+      5642.052785951155
+    ],
+    "remainingMass": 4381.99005939456,
+    "purity": 0.773,
+    "density": 2742.2,
     "colliderShapeId": "asteroid_circle"
   }
 ]

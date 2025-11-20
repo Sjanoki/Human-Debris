@@ -7,6 +7,7 @@ import socket
 import sys
 import threading
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import pygame
@@ -19,10 +20,12 @@ ZOOM_STEP = 1.1
 ZOOM_MIN = 0.25
 ZOOM_MAX = 240000.0
 TARGET_PICK_RADIUS_PX = 30
+ICON_THRESHOLD_PX = 20
 SCALE_BAR_PIXELS = 120
 ORBIT_STEPS = 900
 MIN_ORBIT_DURATION = 600.0
 MAX_ORBIT_DURATION = 20000.0
+INTERCEPT_DISTANCE_THRESHOLD = 1e6
 
 
 @dataclass
@@ -119,6 +122,16 @@ class GuiClient:
         self.station_map: Dict[int, Dict[str, object]] = {}
         self.station_body_lookup: Dict[int, int] = {}
         self.ship_classes: Dict[str, Dict[str, object]] = {}
+        self.ship_shapes: Dict[str, Dict[str, object]] = {}
+        self.station_shapes: Dict[int, Dict[str, object]] = {}
+        self.default_ship_shape = {
+            "vertices": [(-1.0, -0.6), (1.0, 0.0), (-1.0, 0.6)],
+            "scale_m": 50.0,
+        }
+        self.default_station_shape = {
+            "vertices": [(-1.0, -1.0), (1.0, -1.0), (1.0, 1.0), (-1.0, 1.0)],
+            "scale_m": 2000.0,
+        }
         self.active_ship_id: int = -1
         self.log_lines: List[str] = []
         self.camera_center = [0.0, 0.0]
@@ -132,7 +145,11 @@ class GuiClient:
         self.active_orbit_path: List[Tuple[float, float]] = []
         self.target_orbit_path: List[Tuple[float, float]] = []
         self.station_buttons: List[Tuple[str, pygame.Rect, Dict[str, object]]] = []
+        self.ship_by_body_id: Dict[int, Dict[str, object]] = {}
+        self.closest_approach_info: Optional[Dict[str, float]] = None
         self.logout_sent = False
+
+        self.load_shape_definitions()
 
     def log(self, text: str) -> None:
         print(text)
@@ -156,6 +173,54 @@ class GuiClient:
             return
         payload = self.control_state.to_payload(self.active_ship_id)
         self.client.send(payload)
+
+    def load_shape_definitions(self) -> None:
+        config_dir = Path(__file__).resolve().parent.parent / "server" / "config"
+        ship_config = config_dir / "ship_classes.json"
+        station_config = config_dir / "stations.json"
+
+        def parse_vertices(raw_vertices: object) -> List[Tuple[float, float]]:
+            vertices: List[Tuple[float, float]] = []
+            if isinstance(raw_vertices, list):
+                for entry in raw_vertices:
+                    if isinstance(entry, list) and len(entry) == 2:
+                        try:
+                            vertices.append((float(entry[0]), float(entry[1])))
+                        except (TypeError, ValueError):
+                            continue
+            return vertices
+
+        self.ship_shapes = {}
+        try:
+            data = json.loads(ship_config.read_text())
+            if isinstance(data, list):
+                for entry in data:
+                    class_id = entry.get("id") if isinstance(entry, dict) else None
+                    if not class_id or not isinstance(entry, dict):
+                        continue
+                    vertices = parse_vertices(entry.get("shape_vertices"))
+                    scale_m = float(entry.get("shape_scale_m", self.default_ship_shape["scale_m"]))
+                    if vertices:
+                        self.ship_shapes[class_id] = {"vertices": vertices, "scale_m": scale_m}
+        except (OSError, json.JSONDecodeError):
+            pass
+
+        self.station_shapes = {}
+        try:
+            data = json.loads(station_config.read_text())
+            if isinstance(data, list):
+                for entry in data:
+                    if not isinstance(entry, dict):
+                        continue
+                    station_id = entry.get("id")
+                    if station_id is None:
+                        continue
+                    vertices = parse_vertices(entry.get("shape_vertices"))
+                    scale_m = float(entry.get("shape_scale_m", self.default_station_shape["scale_m"]))
+                    if vertices:
+                        self.station_shapes[int(station_id)] = {"vertices": vertices, "scale_m": scale_m}
+        except (OSError, json.JSONDecodeError):
+            pass
 
     def adjust_zoom(self, wheel_delta: int) -> None:
         if wheel_delta > 0:
@@ -424,6 +489,9 @@ class GuiClient:
                     for station_id, station in self.station_map.items()
                     if station.get("body_id") is not None
                 }
+                self.ship_by_body_id = {
+                    ship.get("body_id"): ship for ship in message.get("ships", []) if ship.get("body_id") is not None
+                }
                 self.ship_classes = {
                     sc.get("ship_class_id"): sc for sc in message.get("ship_classes", [])
                 }
@@ -462,26 +530,28 @@ class GuiClient:
                 self.selected_target_id = None
                 self.selected_target_label = ""
 
-    def compute_orbit_path(self, body: Dict[str, object]) -> List[Tuple[float, float]]:
-        x = body.get("x", 0.0)
-        y = body.get("y", 0.0)
-        vx = body.get("vx", 0.0)
-        vy = body.get("vy", 0.0)
-        r0 = math.hypot(x, y)
+    def estimate_orbit_horizon(self, body: Dict[str, object]) -> float:
+        r0 = math.hypot(body.get("x", 0.0), body.get("y", 0.0))
         if r0 <= 0 or self.planet_mu <= 0:
-            return []
+            return 0.0
         orbital_period = 2.0 * math.pi * math.sqrt(max(r0, 1.0) ** 3 / self.planet_mu)
-        total_time = min(max(orbital_period, MIN_ORBIT_DURATION), MAX_ORBIT_DURATION)
+        return min(max(orbital_period, MIN_ORBIT_DURATION), MAX_ORBIT_DURATION)
+
+    def predict_positions(
+        self, body: Dict[str, object], total_time: float
+    ) -> Tuple[List[Tuple[float, float]], float]:
+        if total_time <= 0.0 or self.planet_mu <= 0.0 or ORBIT_STEPS <= 0:
+            return [], 0.0
         dt = total_time / ORBIT_STEPS
         points: List[Tuple[float, float]] = []
-        px, py = x, y
-        pvx, pvy = vx, vy
+        px = body.get("x", 0.0)
+        py = body.get("y", 0.0)
+        pvx = body.get("vx", 0.0)
+        pvy = body.get("vy", 0.0)
         for _ in range(ORBIT_STEPS):
             points.append((px, py))
             r = math.hypot(px, py)
-            if r < max(1.0, self.planet_radius * 0.9):
-                break
-            if r > 2e8:
+            if r < max(1.0, self.planet_radius * 0.9) or r > 2e8:
                 break
             accel = -self.planet_mu / max(r ** 3, 1.0)
             ax = accel * px
@@ -490,7 +560,47 @@ class GuiClient:
             pvy += ay * dt
             px += pvx * dt
             py += pvy * dt
+        return points, dt
+
+    def compute_orbit_path(self, body: Dict[str, object]) -> List[Tuple[float, float]]:
+        total_time = self.estimate_orbit_horizon(body)
+        points, _ = self.predict_positions(body, total_time)
         return points
+
+    def compute_closest_approach(self) -> Optional[Dict[str, float]]:
+        if self.selected_target_id is None or self.active_ship_id < 0:
+            return None
+        active_body = self.get_active_ship_body()
+        target_body = self.body_map.get(self.selected_target_id)
+        if not active_body or not target_body:
+            return None
+        horizon = min(
+            self.estimate_orbit_horizon(active_body), self.estimate_orbit_horizon(target_body)
+        )
+        if horizon <= 0:
+            return None
+        ship_positions, dt = self.predict_positions(active_body, horizon)
+        target_positions, _ = self.predict_positions(target_body, horizon)
+        limit = min(len(ship_positions), len(target_positions))
+        if limit == 0 or dt <= 0:
+            return None
+        best_idx = -1
+        best_distance = float("inf")
+        for i in range(limit):
+            dx = ship_positions[i][0] - target_positions[i][0]
+            dy = ship_positions[i][1] - target_positions[i][1]
+            distance = math.hypot(dx, dy)
+            if distance < best_distance:
+                best_distance = distance
+                best_idx = i
+        if best_idx < 0 or best_distance > INTERCEPT_DISTANCE_THRESHOLD:
+            return None
+        return {
+            "position_x": ship_positions[best_idx][0],
+            "position_y": ship_positions[best_idx][1],
+            "distance": best_distance,
+            "time": best_idx * dt,
+        }
 
     def draw(self) -> None:
         self.screen.fill((4, 6, 16))
@@ -512,23 +622,24 @@ class GuiClient:
 
         active_body = self.get_active_ship_body()
         active_body_id = active_body.get("body_id") if active_body else None
+        self.closest_approach_info = self.compute_closest_approach()
 
         for body in self.body_map.values():
             position = self.world_to_screen(body.get("x", 0.0), body.get("y", 0.0))
             btype = body.get("type")
+            selected = body.get("body_id") == self.selected_target_id
             if btype == "Asteroid":
-                pygame.draw.circle(self.screen, (200, 200, 100), (int(position.x), int(position.y)), 6)
+                self.draw_asteroid(body, position, selected)
             elif btype == "Station":
-                rect = pygame.Rect(0, 0, 40, 20)
-                rect.center = (int(position.x), int(position.y))
-                pygame.draw.rect(self.screen, (120, 200, 255), rect, border_radius=4)
-                if body.get("body_id") == self.selected_target_id:
-                    pygame.draw.rect(self.screen, (255, 230, 120), rect, width=2, border_radius=4)
+                self.draw_station_shape(body, position, selected)
             elif btype == "Ship":
-                self.draw_ship_shape(body, position, active_body_id)
-            if body.get("body_id") == self.selected_target_id and btype != "Station":
+                self.draw_ship_shape(body, position, active_body_id, selected)
+            elif btype == "Debris":
+                self.draw_debris_icon(position, selected)
+            elif selected:
                 pygame.draw.circle(self.screen, (255, 230, 120), (int(position.x), int(position.y)), 10, width=2)
 
+        self.draw_intercept_marker()
         self.draw_scale_bar()
         self.draw_station_panel()
 
@@ -549,20 +660,136 @@ class GuiClient:
                 1,
             )
 
-    def draw_ship_shape(self, body: Dict[str, object], position: pygame.math.Vector2, active_body_id: Optional[int]) -> None:
+    def compute_shape_pixel_size(self, shape: Dict[str, object]) -> float:
+        scale = self.base_scale * self.zoom
+        if scale <= 0:
+            return 0.0
+        vertices = shape.get("vertices", [])
+        if not vertices:
+            return shape.get("scale_m", 0.0) * scale
+        max_radius = max((math.hypot(v[0], v[1]) for v in vertices), default=1.0)
+        return max_radius * shape.get("scale_m", 0.0) * 2.0 * scale
+
+    def transform_shape_to_screen(
+        self, body: Dict[str, object], shape: Dict[str, object]
+    ) -> List[Tuple[int, int]]:
+        vertices = shape.get("vertices") or self.default_ship_shape["vertices"]
+        scale_m = shape.get("scale_m", self.default_ship_shape["scale_m"])
         angle = body.get("angle", 0.0)
-        size = 16
-        color = (255, 120, 120)
-        if body.get("body_id") == active_body_id:
-            color = (100, 255, 160)
-        elif body.get("body_id") == self.selected_target_id:
-            color = (255, 230, 80)
+        cos_a = math.cos(angle)
+        sin_a = math.sin(angle)
+        body_x = body.get("x", 0.0)
+        body_y = body.get("y", 0.0)
+        points: List[Tuple[int, int]] = []
+        for vx, vy in vertices:
+            wx = vx * scale_m
+            wy = vy * scale_m
+            world_x = body_x + wx * cos_a - wy * sin_a
+            world_y = body_y + wx * sin_a + wy * cos_a
+            projected = self.world_to_screen(world_x, world_y)
+            points.append((int(projected.x), int(projected.y)))
+        return points
+
+    def draw_ship_icon(
+        self, position: pygame.math.Vector2, angle: float, color: Tuple[int, int, int]
+    ) -> None:
+        size = 8
         points = []
         for local in ((0, size), (-size / 2, -size / 2), (size / 2, -size / 2)):
             px = position.x + local[0] * math.cos(angle) - local[1] * math.sin(angle)
             py = position.y + local[0] * math.sin(angle) + local[1] * math.cos(angle)
             points.append((px, py))
         pygame.draw.polygon(self.screen, color, points, width=0)
+
+    def draw_ship_shape(
+        self, body: Dict[str, object], position: pygame.math.Vector2, active_body_id: Optional[int], selected: bool
+    ) -> None:
+        angle = body.get("angle", 0.0)
+        ship_info = self.ship_by_body_id.get(body.get("body_id"))
+        class_id = ship_info.get("ship_class_id") if ship_info else None
+        shape = self.ship_shapes.get(class_id, self.default_ship_shape)
+        color = (255, 120, 120)
+        if body.get("body_id") == active_body_id:
+            color = (100, 255, 160)
+        elif selected:
+            color = (255, 230, 80)
+        max_dim_px = self.compute_shape_pixel_size(shape)
+        if max_dim_px < ICON_THRESHOLD_PX:
+            self.draw_ship_icon(position, angle, color)
+            return
+        points = self.transform_shape_to_screen(body, shape)
+        pygame.draw.polygon(self.screen, color, points, width=0)
+        if selected:
+            pygame.draw.polygon(self.screen, (255, 230, 120), points, width=2)
+
+    def draw_station_shape(self, body: Dict[str, object], position: pygame.math.Vector2, selected: bool) -> None:
+        station_id = self.find_station_id_from_body(body.get("body_id"))
+        shape = self.station_shapes.get(station_id or -1, self.default_station_shape)
+        max_dim_px = self.compute_shape_pixel_size(shape)
+        color = (120, 200, 255)
+        if max_dim_px < ICON_THRESHOLD_PX:
+            size = 10
+            rect = pygame.Rect(0, 0, size, size)
+            rect.center = (int(position.x), int(position.y))
+            pygame.draw.rect(self.screen, color, rect, border_radius=3)
+            if selected:
+                pygame.draw.rect(self.screen, (255, 230, 120), rect, width=2, border_radius=3)
+            return
+        points = self.transform_shape_to_screen(body, shape)
+        pygame.draw.polygon(self.screen, color, points, width=0)
+        pygame.draw.polygon(self.screen, (30, 60, 90), points, width=2)
+        if selected:
+            pygame.draw.polygon(self.screen, (255, 230, 120), points, width=2)
+
+    def estimate_asteroid_radius(self, body: Dict[str, object]) -> float:
+        mass = float(body.get("mass", body.get("remainingMass", 2000.0)))
+        density = float(body.get("density", 2600.0))
+        try:
+            radius = ((3.0 * mass) / (4.0 * math.pi * density)) ** (1.0 / 3.0)
+        except (ZeroDivisionError, ValueError):
+            radius = 10.0
+        return max(5.0, radius)
+
+    def draw_asteroid(self, body: Dict[str, object], position: pygame.math.Vector2, selected: bool) -> None:
+        radius_m = self.estimate_asteroid_radius(body)
+        scale = self.base_scale * self.zoom
+        radius_px = radius_m * scale
+        color = (200, 200, 100)
+        if radius_px * 2 < ICON_THRESHOLD_PX:
+            pygame.draw.circle(self.screen, color, (int(position.x), int(position.y)), 3)
+        else:
+            pygame.draw.circle(self.screen, color, (int(position.x), int(position.y)), max(2, int(radius_px)))
+            pygame.draw.circle(self.screen, (120, 120, 80), (int(position.x), int(position.y)), max(2, int(radius_px)), width=1)
+        if selected:
+            pygame.draw.circle(self.screen, (255, 230, 120), (int(position.x), int(position.y)), 10, width=2)
+
+    def draw_debris_icon(self, position: pygame.math.Vector2, selected: bool) -> None:
+        size = 8
+        pygame.draw.line(
+            self.screen,
+            (180, 180, 220),
+            (position.x - size, position.y - size),
+            (position.x + size, position.y + size),
+            2,
+        )
+        pygame.draw.line(
+            self.screen,
+            (180, 180, 220),
+            (position.x - size, position.y + size),
+            (position.x + size, position.y - size),
+            2,
+        )
+        if selected:
+            pygame.draw.circle(self.screen, (255, 230, 120), (int(position.x), int(position.y)), 10, width=2)
+
+    def draw_intercept_marker(self) -> None:
+        if not self.closest_approach_info:
+            return
+        position = self.world_to_screen(
+            self.closest_approach_info["position_x"], self.closest_approach_info["position_y"]
+        )
+        pygame.draw.circle(self.screen, (200, 120, 255), (int(position.x), int(position.y)), 8, width=2)
+        pygame.draw.circle(self.screen, (80, 30, 120), (int(position.x), int(position.y)), 4, width=1)
 
     def draw_scale_bar(self) -> None:
         scale = self.base_scale * self.zoom
@@ -658,6 +885,11 @@ class GuiClient:
             else:
                 info_lines.append("Target: None")
             info_lines.append(f"Zoom: {self.zoom:.3f}x")
+            if self.closest_approach_info:
+                info_lines.append(
+                    f"Closest approach: {self.format_distance(self.closest_approach_info['distance'])} in "
+                    f"{self.closest_approach_info['time']:.0f} s"
+                )
         ship_info = self.get_active_ship_info()
         if ship_info:
             info_lines.append(f"Fuel: {ship_info.get('fuel_mass', 0):.1f}")

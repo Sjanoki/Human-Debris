@@ -3,6 +3,13 @@
     "id": 1,
     "initialPosition": [10000000.0, 0.0],
     "initialVelocity": [0.0, 6313.5],
+    "shape_vertices": [
+      [-1.0, -1.0],
+      [1.0, -1.0],
+      [1.0, 1.0],
+      [-1.0, 1.0]
+    ],
+    "shape_scale_m": 2000.0,
     "colliderShapeId": "station_circle",
     "dockingPorts": [
       {

@@ -58,8 +58,13 @@ struct ShipClass {
     double cargoCapacity{0.0};
     double radarRange{0.0};
     double maxRotationRate{0.0};
+    double maxFuelMass{0.0};
     EngineType engine;
+    std::string engineType;
+    std::string weaponType;
     std::string colliderShapeId;
+    std::vector<Vec2> shapeVertices;
+    double shapeScaleMeters{0.0};
 };
 
 struct ShipControlState {
@@ -115,6 +120,8 @@ struct Station {
     int bodyId{-1};
     std::vector<DockingPort> dockingPorts;
     StationMarket market;
+    std::vector<Vec2> shapeVertices;
+    double shapeScaleMeters{0.0};
 };
 
 enum class CargoType { Ore };
