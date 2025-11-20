@@ -288,27 +288,15 @@ int spawnDockedShipForPlayer(orbital::core::World& world, orbital::core::Player&
         return -1;
     }
     const auto* blueprint = world.findBlueprint(shipClass->blueprintId);
-    Vec2 dockPosition = stationBody->position;
-    double dockAngle = stationBody->angle;
-    if (!station->dockingPorts.empty()) {
-        const auto& port = station->dockingPorts.front();
-        double c = std::cos(stationBody->angle);
-        double s = std::sin(stationBody->angle);
-        dockPosition = stationBody->position + Vec2{port.localPosition.x * c - port.localPosition.y * s,
-                                                    port.localPosition.x * s + port.localPosition.y * c};
-        Vec2 forward = {port.localForward.x * c - port.localForward.y * s, port.localForward.x * s + port.localForward.y * c};
-        dockAngle = std::atan2(forward.y, forward.x);
-    }
-
     orbital::core::Body body;
     body.id = world.nextBodyId++;
     body.type = orbital::core::BodyType::Ship;
     body.mass = blueprint && blueprint->mass > 0.0 ? blueprint->mass : shipClass->baseMass;
     body.inertia = blueprint && blueprint->moment_of_inertia > 0.0 ? blueprint->moment_of_inertia : body.mass;
     body.colliderId = 0;
-    body.position = dockPosition;
+    body.position = stationBody->position;
     body.velocity = stationBody->velocity;
-    body.angle = dockAngle;
+    body.angle = stationBody->angle;
     body.angularVelocity = 0.0;
     world.bodies.push_back(body);
 
