@@ -27,15 +27,16 @@ void ThrustSystem::process(World& world) {
     world.commandQueues.thrustCommands.clear();
 
     for (const auto& cmd : commands) {
-        Ship* ship = world.findShipById(cmd.shipId);
-        if (!ship) {
+        Ship* shipPtr = world.findShipById(cmd.shipId);
+        if (!shipPtr) {
             continue;
         }
-        Body* body = world.findBodyById(ship->bodyId);
+        Ship& ship = *shipPtr;
+        Body* body = world.findBodyById(ship.bodyId);
         if (!body || !body->active) {
             continue;
         }
-        ShipClass* shipClass = world.findShipClass(ship->shipClassId);
+        ShipClass* shipClass = world.findShipClass(ship.shipClassId);
         if (!shipClass) {
             continue;
         }
@@ -44,17 +45,16 @@ void ThrustSystem::process(World& world) {
         double maxDuration = 5.0;
         duration = std::min(duration, maxDuration);
         double fuelUse = throttle * shipClass->engine.fuelUsePerSecondAtFullThrust * duration;
-        if (fuelUse > ship->fuelMass) {
-            duration *= (ship->fuelMass / fuelUse);
-            fuelUse = ship->fuelMass;
+        if (fuelUse > ship.fuelMass) {
+            duration *= (ship.fuelMass / fuelUse);
+            fuelUse = ship.fuelMass;
         }
         if (fuelUse <= 0.0) {
             continue;
         }
         double force = throttle * shipClass->engine.maxThrust;
-        double accel = force / std::max(1.0, body->mass);
         Vec2 totalForce{0.0, 0.0};
-        const auto* bp = world.findBlueprint(ship->blueprintId);
+        const auto* bp = world.findBlueprint(ship.blueprintId);
         if (bp && !bp->engines.empty()) {
             double perEngineForce = force / static_cast<double>(bp->engines.size());
             for (const auto& engine : bp->engines) {
@@ -66,7 +66,7 @@ void ThrustSystem::process(World& world) {
         }
         Vec2 accelVec = totalForce / std::max(1.0, body->mass);
         body->velocity += accelVec * duration;
-        ship->fuelMass -= fuelUse;
+        ship.fuelMass -= fuelUse;
     }
 
     for (auto& ship : world.ships) {
@@ -109,7 +109,7 @@ void ThrustSystem::process(World& world) {
         }
         double force = shipClass->engine.maxThrust;
         Vec2 totalForce{0.0, 0.0};
-        const auto* bp = world.findBlueprint(ship->blueprintId);
+        const auto* bp = world.findBlueprint(ship.blueprintId);
         if (bp && !bp->engines.empty()) {
             double perEngineForce = force / static_cast<double>(bp->engines.size());
             for (const auto& engine : bp->engines) {
