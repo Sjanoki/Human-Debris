@@ -45,7 +45,7 @@ void ThrustSystem::process(World& world) {
         }
         double force = throttle * shipClass->engine.maxThrust;
         double accel = force / std::max(1.0, body->mass);
-        Vec2 forward{std::cos(body->angle), std::sin(body->angle)};
+        Vec2 forward{-std::sin(body->angle), std::cos(body->angle)};
         body->velocity += forward * (accel * duration);
         ship->fuelMass -= fuelUse;
     }
@@ -90,7 +90,7 @@ void ThrustSystem::process(World& world) {
         }
         double force = shipClass->engine.maxThrust;
         double accel = force / std::max(1.0, body->mass);
-        Vec2 forward{std::cos(body->angle), std::sin(body->angle)};
+        Vec2 forward{-std::sin(body->angle), std::cos(body->angle)};
         body->velocity += forward * (accel * effectiveDt);
         ship.fuelMass -= fuelUsed;
     }
