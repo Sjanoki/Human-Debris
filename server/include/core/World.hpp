@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "core/Blueprint.hpp"
 #include "util/Vec2.hpp"
 
 namespace orbital::core {
@@ -58,8 +59,14 @@ struct ShipClass {
     double cargoCapacity{0.0};
     double radarRange{0.0};
     double maxRotationRate{0.0};
+    double maxFuelMass{0.0};
     EngineType engine;
+    std::string engineType;
+    std::string weaponType;
     std::string colliderShapeId;
+    std::vector<Vec2> shapeVertices;
+    double shapeScaleMeters{0.0};
+    std::string blueprintId;
 };
 
 struct ShipControlState {
@@ -73,12 +80,14 @@ struct Ship {
     int id{-1};
     int bodyId{-1};
     std::string shipClassId;
+    std::string blueprintId;
     double fuelMass{0.0};
     double maxFuelMass{0.0};
     int cargoHoldId{-1};
     int ownerPlayerId{-1};
     bool docked{false};
     int dockedStationId{-1};
+    int atStationId{-1};
     ShipControlState controlState;
 };
 
@@ -115,6 +124,9 @@ struct Station {
     int bodyId{-1};
     std::vector<DockingPort> dockingPorts;
     StationMarket market;
+    std::vector<Vec2> shapeVertices;
+    double shapeScaleMeters{0.0};
+    std::string blueprintId;
 };
 
 enum class CargoType { Ore };
@@ -203,6 +215,7 @@ struct CommandQueues {
 struct World {
     Planet planet;
     SimulationConfig simulation;
+    BlueprintLibrary blueprints;
     std::vector<PolygonCollider> colliders;
     std::vector<Body> bodies;
     std::vector<Ship> ships;
@@ -227,6 +240,7 @@ struct World {
     Station* findStationById(int id);
     Asteroid* findAsteroidByBody(int bodyId);
     CargoHold* findCargoHoldById(int id);
+    const Blueprint* findBlueprint(const std::string& id) const { return blueprints.getBlueprint(id); }
 };
 
 } // namespace orbital::core

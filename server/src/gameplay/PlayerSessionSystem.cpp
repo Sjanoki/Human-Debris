@@ -14,6 +14,11 @@ Player* PlayerSessionSystem::login(World& world, const std::string& name, int co
             player.online = true;
             player.connectionId = connectionId;
             player.worldStateSubscribed = false;
+            if (player.dockedStationId < 0 && player.activeShipId >= 0) {
+                if (auto* activeShip = world.findShipById(player.activeShipId)) {
+                    player.dockedStationId = activeShip->dockedStationId;
+                }
+            }
             ORBITAL_LOG(Logger::Level::Info, "Player ", name, " logged in");
             return &player;
         }

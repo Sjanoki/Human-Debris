@@ -6,6 +6,7 @@ set(SERVER_SOURCES
     src/util/Vec2.cpp
     src/core/World.cpp
     src/core/ConfigLoader.cpp
+    src/core/BlueprintLoader.cpp
     src/core/WorldBuilder.cpp
     src/physics/PhysicsSystem.cpp
     src/gameplay/ThrustSystem.cpp

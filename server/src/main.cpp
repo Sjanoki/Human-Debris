@@ -27,6 +27,7 @@ nlohmann::json makeWorldSummary(orbital::core::World& world, orbital::core::Play
         {"name", player.name},
         {"credits", player.credits},
         {"active_ship_id", player.activeShipId},
+        {"docked_station_id", player.dockedStationId},
     };
     json ships = json::array();
     for (int shipId : player.ownedShipIds) {
@@ -38,9 +39,11 @@ nlohmann::json makeWorldSummary(orbital::core::World& world, orbital::core::Play
         json shipJson;
         shipJson["id"] = ship->id;
         shipJson["class"] = ship->shipClassId;
+        shipJson["blueprint_id"] = ship->blueprintId;
         shipJson["fuel"] = ship->fuelMass;
         shipJson["docked"] = ship->docked;
         shipJson["docked_station_id"] = ship->dockedStationId;
+        shipJson["at_station_id"] = ship->atStationId;
         if (body) {
             shipJson["position"] = {body->position.x, body->position.y};
             shipJson["velocity"] = {body->velocity.x, body->velocity.y};
@@ -48,6 +51,26 @@ nlohmann::json makeWorldSummary(orbital::core::World& world, orbital::core::Play
         ships.push_back(shipJson);
     }
     summary["ships"] = ships;
+    int summaryStationId = player.dockedStationId;
+    if (summaryStationId < 0) {
+        if (auto* active = world.findShipById(player.activeShipId); active) {
+            summaryStationId = active->dockedStationId;
+        }
+    }
+    json storage = json::array();
+    if (summaryStationId >= 0) {
+        for (const auto& ship : world.ships) {
+            if (ship.ownerPlayerId != player.id || ship.atStationId != summaryStationId) {
+                continue;
+            }
+            json entry;
+            entry["id"] = ship.id;
+            entry["class_id"] = ship.shipClassId;
+            entry["blueprint_id"] = ship.blueprintId;
+            storage.push_back(entry);
+        }
+    }
+    summary["player_ships_at_station"] = storage;
     summary["counts"] = {
         {"bodies", world.bodies.size()},
         {"ships", world.ships.size()},
@@ -97,9 +120,11 @@ json makeWorldState(orbital::core::World& world, orbital::core::Player& player) 
         s["body_id"] = ship.bodyId;
         s["owner_player_id"] = ship.ownerPlayerId;
         s["ship_class_id"] = ship.shipClassId;
+        s["blueprint_id"] = ship.blueprintId;
         s["fuel_mass"] = ship.fuelMass;
         s["docked"] = ship.docked;
         s["docked_station_id"] = ship.dockedStationId;
+        s["at_station_id"] = ship.atStationId;
         const auto* hold = world.findCargoHoldById(ship.cargoHoldId);
         if (hold) {
             s["cargo_mass"] = hold->currentMass;
@@ -118,6 +143,15 @@ json makeWorldState(orbital::core::World& world, orbital::core::Player& player) 
         s["station_id"] = station.id;
         s["body_id"] = station.bodyId;
         s["name"] = "Station " + std::to_string(station.id);
+        s["blueprint_id"] = station.blueprintId;
+        json verts = json::array();
+        for (const auto& v : station.shapeVertices) {
+            verts.push_back({v.x, v.y});
+        }
+        if (!verts.empty()) {
+            s["shape_vertices"] = verts;
+            s["shape_scale_m"] = station.shapeScaleMeters;
+        }
         json market;
         market["basePricePerKg"] = station.market.basePricePerKg;
         market["purityMultiplier"] = station.market.purityMultiplier;
@@ -142,6 +176,27 @@ json makeWorldState(orbital::core::World& world, orbital::core::Player& player) 
     playerJson["docked_station_id"] = player.dockedStationId;
     state["player"] = playerJson;
 
+    int stationFocus = player.dockedStationId;
+    if (stationFocus < 0) {
+        if (auto* active = world.findShipById(player.activeShipId); active) {
+            stationFocus = active->dockedStationId;
+        }
+    }
+    json storage = json::array();
+    if (stationFocus >= 0) {
+        for (const auto& ship : world.ships) {
+            if (ship.ownerPlayerId != player.id || ship.atStationId != stationFocus) {
+                continue;
+            }
+            json entry;
+            entry["id"] = ship.id;
+            entry["class_id"] = ship.shipClassId;
+            entry["blueprint_id"] = ship.blueprintId;
+            storage.push_back(entry);
+        }
+    }
+    state["player_ships_at_station"] = storage;
+
     json planet;
     planet["radius"] = world.planet.radius;
     planet["mu"] = world.planet.mu;
@@ -153,6 +208,18 @@ json makeWorldState(orbital::core::World& world, orbital::core::Player& player) 
         sc["ship_class_id"] = shipClass.id;
         sc["cargo_capacity"] = shipClass.cargoCapacity;
         sc["max_rotation_rate"] = shipClass.maxRotationRate;
+        sc["max_fuel_mass"] = shipClass.maxFuelMass;
+        sc["engine_type"] = shipClass.engineType;
+        sc["weapon_type"] = shipClass.weaponType;
+        sc["collider_shape_id"] = shipClass.colliderShapeId;
+        json verts = json::array();
+        for (const auto& v : shipClass.shapeVertices) {
+            verts.push_back({v.x, v.y});
+        }
+        if (!verts.empty()) {
+            sc["shape_vertices"] = verts;
+            sc["shape_scale_m"] = shipClass.shapeScaleMeters;
+        }
         json engine;
         engine["name"] = shipClass.engine.name;
         engine["max_thrust"] = shipClass.engine.maxThrust;
@@ -170,10 +237,12 @@ int spawnShipForPlayer(orbital::core::World& world, orbital::core::Player& playe
     if (!shipClass) {
         return -1;
     }
+    const auto* blueprint = world.findBlueprint(shipClass->blueprintId);
     orbital::core::Body body;
     body.id = world.nextBodyId++;
     body.type = orbital::core::BodyType::Ship;
-    body.mass = shipClass->baseMass;
+    body.mass = blueprint && blueprint->mass > 0.0 ? blueprint->mass : shipClass->baseMass;
+    body.inertia = blueprint && blueprint->moment_of_inertia > 0.0 ? blueprint->moment_of_inertia : body.mass;
     body.colliderId = 0;
     double altitude = world.planet.radius + 400000.0 + world.nextShipId * 100.0;
     body.position = {altitude, 0.0};
@@ -190,9 +259,11 @@ int spawnShipForPlayer(orbital::core::World& world, orbital::core::Player& playe
     orbital::core::Ship ship;
     ship.id = world.nextShipId++;
     ship.shipClassId = shipClass->id;
+    ship.blueprintId = shipClass->blueprintId;
     ship.bodyId = body.id;
-    ship.fuelMass = 200.0;
-    ship.maxFuelMass = 200.0;
+    double fuelCap = shipClass->maxFuelMass > 0.0 ? shipClass->maxFuelMass : 200.0;
+    ship.fuelMass = fuelCap;
+    ship.maxFuelMass = fuelCap;
     ship.cargoHoldId = hold.id;
     ship.ownerPlayerId = player.id;
     world.ships.push_back(ship);
@@ -216,11 +287,12 @@ int spawnDockedShipForPlayer(orbital::core::World& world, orbital::core::Player&
     if (!stationBody) {
         return -1;
     }
-
+    const auto* blueprint = world.findBlueprint(shipClass->blueprintId);
     orbital::core::Body body;
     body.id = world.nextBodyId++;
     body.type = orbital::core::BodyType::Ship;
-    body.mass = shipClass->baseMass;
+    body.mass = blueprint && blueprint->mass > 0.0 ? blueprint->mass : shipClass->baseMass;
+    body.inertia = blueprint && blueprint->moment_of_inertia > 0.0 ? blueprint->moment_of_inertia : body.mass;
     body.colliderId = 0;
     body.position = stationBody->position;
     body.velocity = stationBody->velocity;
@@ -237,19 +309,23 @@ int spawnDockedShipForPlayer(orbital::core::World& world, orbital::core::Player&
     orbital::core::Ship ship;
     ship.id = world.nextShipId++;
     ship.shipClassId = shipClass->id;
+    ship.blueprintId = shipClass->blueprintId;
     ship.bodyId = body.id;
-    ship.fuelMass = 200.0;
-    ship.maxFuelMass = 200.0;
+    double fuelCap = shipClass->maxFuelMass > 0.0 ? shipClass->maxFuelMass : 200.0;
+    ship.fuelMass = fuelCap;
+    ship.maxFuelMass = fuelCap;
     ship.cargoHoldId = hold.id;
     ship.ownerPlayerId = player.id;
     ship.docked = true;
     ship.dockedStationId = station->id;
+    ship.atStationId = station->id;
     world.ships.push_back(ship);
 
     player.ownedShipIds.push_back(ship.id);
     if (player.activeShipId == -1) {
         player.activeShipId = ship.id;
     }
+    player.dockedStationId = station->id;
 
     return ship.id;
 }
